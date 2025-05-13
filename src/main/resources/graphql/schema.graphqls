@@ -1,9 +1,9 @@
 type Query {
-    classById(id: ID!)
+    classById(id: ID!): ClassType
     myAssignmentsByClassID()
 }
 
-type ClassClass {
+type ClassType {
     owner: Teacher
     teachers: [Teacher]
     students: [Student]
