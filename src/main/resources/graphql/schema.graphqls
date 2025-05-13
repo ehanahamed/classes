@@ -1,41 +1,38 @@
 type Query {
     classById(id: ID!): ClassType
-    myAssignmentsByClassID()
+    myClasses(): [ClassType]
 }
 
 type ClassType {
-    owner: Teacher
+    id: ID!
+    name: String!
+    course: Course
     teachers: [Teacher]
     students: [Student]
 }
 
-interface User {
+type User {
     id: ID!
     username: String
     display_name: String
+    oauth_google_email: String
 }
 
-type AuthedUser implements User {
+type AuthedUser {
     id: ID!
     username: String
     display_name: String
+    oauth_google_email: String
     auth_type: AuthType
 }
+
 enum AuthType {
     username_password
     oauth_google
 }
 
-type Teacher implements User {
+type Course {
     id: ID!
-    username: String
-    display_name String
-}
-
-type Student implements User {
-    id: ID!
-    username: String
-    oauth_google_email: String
-    display_name: String
+    name: String!
 }
 
