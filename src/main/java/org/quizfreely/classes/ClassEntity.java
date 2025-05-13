@@ -9,8 +9,8 @@ import jakarta.persistence.Id;
 @Table(name = "classes.classes")
 public class ClassEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     private String name;
     private List<Teacher> teachers;
