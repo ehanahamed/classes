@@ -1,6 +1,6 @@
 package org.quizfreely.classes.model;
 
-import org.quizfreely.classes.AuthType;
+import org.quizfreely.classes.auth.AuthType;
 
 public class User {
     private UUID id;

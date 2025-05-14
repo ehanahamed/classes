@@ -5,6 +5,7 @@ type Query {
     getCourseById(id: ID!): Course
     getCoursesAsStudent(): [Course]
     getCoursesAsTeacher(): [Course]
+    getCoursesAsAuthor(): [Course]
     getAuthedUser(): AuthedUser
 }
 

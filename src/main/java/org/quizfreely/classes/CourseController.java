@@ -13,4 +13,9 @@ public class CourseController {
     public Course getCourseById(@Argument long id) {
         return ClassRepo.getById(id);
     }
+
+    @QueryMapping
+    public List<Course> getCoursesAsAuthor() {
+        return CourseRepo.getCoursesByAuthor();
+    }
 }
