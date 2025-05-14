@@ -20,7 +20,7 @@ public class ClassModel {
     }
     public ClassModel(
         String name,
-        long courseId,
+        long courseId
     ) {
         this.name = name;
         this.courseId = courseId;

@@ -1,14 +1,19 @@
 type Query {
-    classById(id: ID!): ClassType
-    myClasses(): [ClassType]
+    getClassById(id: ID!): ClassType
+    getClassesAsStudent(): [ClassType]
+    getClassesAsTeacher(): [ClassType]
+    getCourseById(id: ID!): Course
+    getCoursesAsStudent(): [Course]
+    getCoursesAsTeacher(): [Course]
+    getAuthedUser(): AuthedUser
 }
 
 type ClassType {
     id: ID!
     name: String!
     course: Course
-    teachers: [Teacher]
-    students: [Student]
+    teachers: [User]
+    students: [User]
 }
 
 type User {
@@ -34,5 +39,5 @@ enum AuthType {
 type Course {
     id: ID!
     name: String!
+    authors: [User]
 }
-
