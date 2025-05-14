@@ -15,7 +15,7 @@ public class ClassEntity {
     private String name;
     private List<Teacher> teachers;
     private List<Student> students;
-    private Course course;
+    private long courseId;
 
     public ClassEntity() {
         name = "Untitled Class";
@@ -26,26 +26,26 @@ public class ClassEntity {
     public ClassEntity(long id, String name) {
         this.name = name;
     }
-    public ClassEntity(long id, String name, Course course) {
+    public ClassEntity(long id, String name, long courseId) {
         this.name = name;
-        this.course = course;
+        this.courseId = courseId;
     }
     public ClassEntity(
-        long id, String name, Course course, List<Teacher> teachers
+        long id, String name, long courseId, List<Teacher> teachers
     ) {
         this.name = name;
-        this.course = course;
+        this.courseId = courseId;
         this.teachers = teachers;
     }
     public ClassEntity(
         long id,
         String name,
-        Course course,
+        long courseId,
         List<Teacher> teachers,
         List<Student> students
     ) {
         this.name = name;
-        this.course = course;
+        this.courseId = courseId;
         this.teachers = teachers;
         this.students = students;
     }

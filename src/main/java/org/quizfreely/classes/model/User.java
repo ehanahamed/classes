@@ -10,7 +10,19 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private String display_name;
-    private String oauth_google_email;
+
+    private String displayName;
+    private String oauthGoogleEmail;
+
+    public User() {
+        displayName = "User";
+    }
+    public User(UUID id) {
+        this.id = id;
+    }
+    public User(UUID id, String displayName) {
+        this.id = id;
+        this.displayName = displayName;
+    }
 }
 
