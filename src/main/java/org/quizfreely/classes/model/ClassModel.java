@@ -1,53 +1,48 @@
 package org.quizfreely.classes;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-@Entity
-@Table(name = "classes.classes")
-public class ClassEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ClassModel {
     private long id;
-
     private String name;
-    private List<Teacher> teachers;
-    private List<Student> students;
     private long courseId;
 
-    public ClassEntity() {
+    public ClassModel() {
         name = "Untitled Class";
     }
-    public ClassEntity(long id) {
-        name = "Untitled Class";
-    }
-    public ClassEntity(long id, String name) {
-        this.name = name;
-    }
-    public ClassEntity(long id, String name, long courseId) {
-        this.name = name;
-        this.courseId = courseId;
-    }
-    public ClassEntity(
-        long id, String name, long courseId, List<Teacher> teachers
-    ) {
-        this.name = name;
-        this.courseId = courseId;
-        this.teachers = teachers;
-    }
-    public ClassEntity(
+
+    public ClassModel(
         long id,
         String name,
+        long courseId
+    ) {
+        this.id = id;
+        this.name = name;
+        this.courseId = courseId;
+    }
+    public ClassModel(
+        String name,
         long courseId,
-        List<Teacher> teachers,
-        List<Student> students
     ) {
         this.name = name;
         this.courseId = courseId;
-        this.teachers = teachers;
-        this.students = students;
+    }
+
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public long getCourseId() {
+        return courseId;
+    }
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
     }
 }
 
