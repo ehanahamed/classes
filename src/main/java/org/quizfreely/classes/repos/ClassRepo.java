@@ -11,15 +11,15 @@ public class ClassRepo {
     private JdbcTemplate jdbcTemplate;
 
     public ClassModel getClassById(long id) {
-        return jdbcTemplate.query(
+        return jdbcTemplate.queryForObject(
             "SELECT id, name, course_id FROM classes.classes WHERE id = ?",
+            new Object[] { id },
             (resultSet) -> new ClassModel(
                 resultSet.getLong("id"),
                 resultSet.getString("name"),
                 resultSet.getLong("courseId")
-            ),
-            id
-        )[0];
+            )
+        );
     }
 
     public List<ClassModel> getClassesByStudentId(UUID studentUserId) {

@@ -7,7 +7,6 @@ import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
 import graphql.schema.DataFetchingEnvironment;
-import graphql.GraphQLContext;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class ClassController {
 
     @QueryMapping
     public List<ClassModel> getClassesAsTeacher(DataFetchingEnvironment dataFetchingEnv) {
-        AuthContext authContext = dataFetchingEnv.getContext().get("authContext");
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
             return classRepo.getClassesByTeacherId(
                 authContext.getAuthedUser().getId()
@@ -40,7 +39,7 @@ public class ClassController {
     }
     @QueryMapping
     public List<ClassModel> getClassesAsStudent(DataFetchingEnvironment dataFetchingEnv) {
-        AuthContext authContext = dataFetchingEnv.getContext().get("authContext");
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
             return classRepo.getClassesByStudentId(
                 authContext.getAuthedUser().getId()
@@ -52,7 +51,7 @@ public class ClassController {
 
     @SchemaMapping
     public Course course(ClassModel classModel) {
-        return courseRepo.getById(classEntity.courseId);
+        return courseRepo.getById(classModel.courseId);
     }
 }
 

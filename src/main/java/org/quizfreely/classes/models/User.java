@@ -14,7 +14,7 @@ public class User {
         return id;
     }
     public void setId(UUID id) {
-        this.id = id
+        this.id = id;
     }
     public String getDisplayName() {
         return displayName;

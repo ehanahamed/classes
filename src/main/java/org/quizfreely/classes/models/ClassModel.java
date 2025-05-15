@@ -40,7 +40,7 @@ public class ClassModel {
     public long getCourseId() {
         return courseId;
     }
-    public void setCourseId(String courseId) {
+    public void setCourseId(long courseId) {
         this.courseId = courseId;
     }
 }

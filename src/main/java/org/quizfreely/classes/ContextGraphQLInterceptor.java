@@ -4,13 +4,14 @@ import org.springframework.graphql.server.WebGraphQlResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+import org.springframework.http.HttpCookie;
 
 import org.quizfreely.classes.auth.AuthRepo;
 
 @Component
 public class ContextGraphQLInterceptor implements WebGraphQlInterceptor {
     @Autowired
-    private AuthedUserRepo authedUserRepo;
+    private AuthRepo authRepo;
 
     @Override
     public Mono<WebGraphQlResponse> intercept(WebGraphQlRequest request, Chain chain) {

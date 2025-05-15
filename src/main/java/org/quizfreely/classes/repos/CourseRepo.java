@@ -1,5 +1,6 @@
 package org.quizfreely.classes.repos;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.quizfreely.classes.models.Course;
 
@@ -8,14 +9,14 @@ public class CourseRepo {
     private JdbcTemplate jdbcTemplate;
 
     public Course getCourseById(long id) {
-        jdbcTemplate.queryForObject(
+        return jdbcTemplate.queryForObject(
             "SELECT id, name FROM classes.courses WHERE id = ?",
-            Object[] { id },
-            (resultSet) -> new Course(
+            new Object[] { id },
+            (resultSet, rowNum) -> new Course(
                 resultSet.getLong("id"),
                 resultSet.getString("name")
             )
-        )
+        );
     }
 }
 

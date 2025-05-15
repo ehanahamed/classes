@@ -1,5 +1,6 @@
 package org.quizfreely.classes;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
@@ -9,13 +10,12 @@ import org.quizfreely.classes.model.Course;
 
 @Controller
 public class CourseController {
-    @QueryMapping
-    public Course getCourseById(@Argument long id) {
-        return ClassRepo.getById(id);
-    }
+    @Autowired
+    private CourseRepo courseRepo;
 
     @QueryMapping
-    public List<Course> getCoursesAsAuthor() {
-        return CourseRepo.getCoursesByAuthor();
+    public Course getCourseById(@Argument long id) {
+        return courseRepo.getCourseById(id);
     }
 }
+
