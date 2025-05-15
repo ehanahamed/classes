@@ -5,23 +5,34 @@ import org.quizfreely.classes.auth.AuthType;
 public class User {
     private UUID id;
     private String displayName;
-    private AuthType authType;
     private String username;
     private String oauthGoogleEmail;
 
-    public User(
-        UUID id,
-        String displayName,
-        AuthType authType,
-        String usernameOrEmail
-    ) {
-        this.id = id;
+    public User() {}
+
+    public UUID getId() {
+        return id;
+    }
+    public void setId(UUID id) {
+        this.id = id
+    }
+    public String getDisplayName() {
+        return displayName;
+    }
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
-        this.authType = authType;
-        if (authType == AuthType.USERNAME_PASSWORD) {
-            this.username = usernameOrEmail;
-        } else {
-            this.oauthGoogleEmail = usernameOrEmail;
-        }
+    }
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public String getOauthGoogleEmail() {
+        return oauthGoogleEmail;
+    }
+    public void setOauthGoogleEmail(String email) {
+        oauthGoogleEmail = email;
     }
 }
+

@@ -4,9 +4,15 @@ public class ClassModel {
     private long id;
     private String name;
     private long courseId;
+    
+    public ClassModel() {}
 
-    public ClassModel() {
-        name = "Untitled Class";
+    public ClassModel(
+        String name,
+        long courseId
+    ) {
+        this.name = name;
+        this.courseId = courseId;
     }
 
     public ClassModel(
@@ -15,13 +21,6 @@ public class ClassModel {
         long courseId
     ) {
         this.id = id;
-        this.name = name;
-        this.courseId = courseId;
-    }
-    public ClassModel(
-        String name,
-        long courseId
-    ) {
         this.name = name;
         this.courseId = courseId;
     }

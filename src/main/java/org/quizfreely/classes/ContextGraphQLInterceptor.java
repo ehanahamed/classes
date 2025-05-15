@@ -5,10 +5,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import org.quizfreely.classes.auth.AuthContext;
+import org.quizfreely.classes.auth.AuthRepo;
 
 @Component
 public class ContextGraphQLInterceptor implements WebGraphQlInterceptor {
+    @Autowired
+    private AuthedUserRepo authedUserRepo;
 
     @Override
     public Mono<WebGraphQlResponse> intercept(WebGraphQlRequest request, Chain chain) {
@@ -20,7 +22,7 @@ public class ContextGraphQLInterceptor implements WebGraphQlInterceptor {
         if (
             authHeader != null &&
             authHeader.substring(
-                0, 7 /* "bearer " is 7 characters */
+                0, 7 /* "bearer " is first 7 characters */
             ).toLowerCase().equals("bearer ")
         ) {
             authToken = authHeader.substring(7);
@@ -34,10 +36,9 @@ public class ContextGraphQLInterceptor implements WebGraphQlInterceptor {
             }
         }
 
-
         request.configureExecutionInput((executionInput, builder) ->
             builder.graphQLContext(contextBuilder ->
-                contextBuilder.of("authContext", new AuthContext(authToken))
+                contextBuilder.of("authContext", authRepo.authContextUsingToken(authToken))
             ).build()
         );
 
