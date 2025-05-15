@@ -1,4 +1,4 @@
-package org.quizfreely.classes.repo;
+package org.quizfreely.classes.repos;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

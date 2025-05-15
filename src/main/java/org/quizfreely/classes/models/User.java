@@ -1,4 +1,4 @@
-package org.quizfreely.classes.model;
+package org.quizfreely.classes.models;
 
 import org.quizfreely.classes.auth.AuthType;
 

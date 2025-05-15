@@ -1,4 +1,4 @@
-package org.quizfreely.classes;
+package org.quizfreely.classes.models;
 
 public class ClassModel {
     private long id;
