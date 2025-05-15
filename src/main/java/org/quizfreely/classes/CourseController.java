@@ -5,8 +5,8 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
-import org.quizfreely.classes.repo.CourseRepo;
-import org.quizfreely.classes.model.Course;
+import org.quizfreely.classes.repos.CourseRepo;
+import org.quizfreely.classes.models.Course;
 
 @Controller
 public class CourseController {

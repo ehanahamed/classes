@@ -2,8 +2,15 @@ package org.quizfreely.classes.repos;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Repository;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.UUID;
 import org.quizfreely.classes.models.User;
 
+@Repository
 public class UserRepo {
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -13,12 +20,15 @@ public class UserRepo {
             "SELECT id, display_name, username, oauth_google_email " +
             "FROM public.profiles WHERE id = ?",
             new Object[] { id },
-            (resultSet) -> {
-                User user = new User();
-                user.setId(resultSet.getUUID("id"));
-                user.setDisplayName(resultSet.getString("display_name"));
-                user.setUsername(resultSet.getString("username"));
-                user.setOauthGoogleEmail(resultSet.getString("oauth_google_email"));
+            new RowMapper<User>() {
+                public User mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+                    User user = new User();
+                    user.setId((UUID) resultSet.getObject("id"));
+                    user.setDisplayName(resultSet.getString("display_name"));
+                    user.setUsername(resultSet.getString("username"));
+                    user.setOauthGoogleEmail(resultSet.getString("oauth_google_email"));
+                    return user;
+                }
             }
         );
     }

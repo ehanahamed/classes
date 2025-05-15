@@ -1,5 +1,7 @@
 package org.quizfreely.classes.auth;
 
+import java.util.UUID;
+
 public class AuthedUser {
     private UUID id;
     private String displayName;

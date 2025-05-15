@@ -11,8 +11,10 @@ import graphql.schema.DataFetchingEnvironment;
 import java.util.List;
 
 import org.quizfreely.classes.auth.AuthContext;
-import org.quizfreely.classes.models;
-import org.quizfreely.classes.repos;
+import org.quizfreely.classes.models.ClassModel;
+import org.quizfreely.classes.models.Course;
+import org.quizfreely.classes.repos.ClassRepo;
+import org.quizfreely.classes.repos.CourseRepo;
 
 @Controller
 public class ClassController {
@@ -23,7 +25,7 @@ public class ClassController {
 
     @QueryMapping
     public ClassModel getClassById(@Argument long id) {
-        return classRepo.getById(id);
+        return classRepo.getClassById(id);
     }
 
     @QueryMapping
@@ -51,7 +53,7 @@ public class ClassController {
 
     @SchemaMapping
     public Course course(ClassModel classModel) {
-        return courseRepo.getById(classModel.courseId);
+        return courseRepo.getCourseById(classModel.getCourseId());
     }
 }
 

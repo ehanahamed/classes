@@ -33,9 +33,10 @@ public class ContextGraphQLInterceptor implements WebGraphQlInterceptor {
             }
         }
 
+        String finalAuthToken = authToken;
         request.configureExecutionInput((executionInput, builder) ->
             builder.graphQLContext(contextBuilder ->
-                contextBuilder.of("authContext", authRepo.authContextUsingToken(authToken))
+                contextBuilder.of("authContext", authRepo.authContextUsingToken(finalAuthToken))
             ).build()
         );
 

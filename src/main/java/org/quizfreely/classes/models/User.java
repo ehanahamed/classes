@@ -1,5 +1,6 @@
 package org.quizfreely.classes.models;
 
+import java.util.UUID;
 import org.quizfreely.classes.auth.AuthType;
 
 public class User {

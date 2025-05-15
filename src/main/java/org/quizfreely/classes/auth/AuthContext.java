@@ -1,5 +1,7 @@
 package org.quizfreely.classes.auth;
 
+import java.util.UUID;
+
 public class AuthContext {
     private boolean authed = false;
     private AuthedUser authedUser;

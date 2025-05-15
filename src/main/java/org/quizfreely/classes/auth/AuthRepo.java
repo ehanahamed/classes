@@ -1,7 +1,12 @@
 package org.quizfreely.classes.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Repository;
+import java.util.UUID;
 
+@Repository
 public class AuthRepo {
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -16,7 +21,7 @@ public class AuthRepo {
                     new Object[] { authToken },
                     (resultSet, rowNum) -> new AuthContext(
                         true,
-                        resultSet.getLong("id"),
+                        (UUID) resultSet.getObject("id"),
                         resultSet.getString("display_name"),
                         AuthType.valueOf(
                             resultSet.getString("auth_type").toUpperCase()
