@@ -10,7 +10,8 @@ type Query {
 }
 
 type Mutation {
-    createClass(name: String!, courseId: ID!): Boolean
+    createClass(name: String!, courseId: ID!): ClassType
+    createCourse(name: String!): Course
     addStudentToClass(studentUserId: ID!, classId: ID!): Boolean
     addTeacherToClass(teacherUserId: ID!, classId: ID!): Boolean
 }

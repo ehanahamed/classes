@@ -2,8 +2,11 @@ package org.quizfreely.classes.repos;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 import org.quizfreely.classes.models.ClassModel;
@@ -13,16 +16,22 @@ public class ClassRepo {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    private RowMapper<ClassModel> classRowMapper = new RowMapper<ClassModel>() {
+        public ClassModel mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            return new ClassModel(
+                resultSet.getLong("id"),
+                resultSet.getString("name"),
+                resultSet.getLong("courseId")
+            );
+        }
+    };
+
     public ClassModel getClassById(long id) {
         try {
             return jdbcTemplate.queryForObject(
                 "SELECT id, name, course_id FROM classes.classes WHERE id = ?",
                 new Object[] { id },
-                (resultSet, rowNum) -> new ClassModel(
-                    resultSet.getLong("id"),
-                    resultSet.getString("name"),
-                    resultSet.getLong("courseId")
-                )
+                classRowMapper
             );
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -32,37 +41,29 @@ public class ClassRepo {
     public List<ClassModel> getClassesByStudentId(UUID studentUserId) {
         return jdbcTemplate.query(
             "SELECT c.id, c.name, c.course_id FROM classes.classes c " +
-            "JOIN classes.classes_students cs ON c.id = cs.class_id " +
+            "JOIN classes.classes_students cs ON cs.class_id = c.id " +
             "WHERE cs.student_user_id = ?",
-            (resultSet, rowNum) -> new ClassModel(
-                resultSet.getLong("id"),
-                resultSet.getString("name"),
-                resultSet.getLong("course_id")
-            ),
-            studentUserId
+            new Object[] { studentUserId },
+            classRowMapper
         );
     }
     public List<ClassModel> getClassesByTeacherId(UUID teacherUserId) {
         return jdbcTemplate.query(
             "SELECT c.id, c.name, c.course_id FROM classes.classes c " +
-            "JOIN classes.classes_teachers ct ON c.id = ct.class_id " +
+            "JOIN classes.classes_teachers ct ON ct.class_id = c.id " +
             "WHERE ct.teacher_user_id = ?",
-            (resultSet, rowNum) -> new ClassModel(
-                resultSet.getLong("id"),
-                resultSet.getString("name"),
-                resultSet.getLong("course_id")
-            ),
-            teacherUserId
+            teacherUserId,
+            classRowMapper
         );
     }
-    public boolean createClass(String name, long courseId) {
+    public ClassModel createClass(String name, long courseId) {
 
-        return jdbcTemplate.update(
+        return jdbcTemplate.queryForObject(
             "INSERT INTO classes (name, course_id) " + 
-            "VALUES (?, ?)",
-            name,
-            courseId
-        ) > 0;
+            "VALUES (?, ?) RETURNING id, name, course_id",
+            new Object[] { name, courseId },
+            classRowMapper
+        );
     }
     public boolean addStudentToClassUsingAuthedId(
         UUID studentUserId, long classId, UUID authedUserId

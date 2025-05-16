@@ -2,8 +2,11 @@ package org.quizfreely.classes.repos;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import org.quizfreely.classes.models.Course;
 
 @Repository
@@ -11,19 +14,33 @@ public class CourseRepo {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    private RowMapper<Course> courseRowMapper = new RowMapper<Course>() {
+        public Course mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            return new Course(
+                resultSet.getLong("id"),
+                resultSet.getString("name")
+            )
+        }
+    };
+
     public Course getCourseById(long id) {
         try {
             return jdbcTemplate.queryForObject(
                 "SELECT id, name FROM classes.courses WHERE id = ?",
                 new Object[] { id },
-                (resultSet, rowNum) -> new Course(
-                    resultSet.getLong("id"),
-                    resultSet.getString("name")
-                )
+                courseRowMapper
             );
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
+    }
+    public Course createCourse(String name) {
+        return jdbcTemplate.queryForObject(
+            "INSERT INTO classes.courses (name) VALUES ? " +
+            "RETURNING id, name",
+            new Object[] { name },
+            courseRowMapper
+        );
     }
 }
 

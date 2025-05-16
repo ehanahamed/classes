@@ -389,5 +389,56 @@ grant insert on classes.classes_students to eh_classes_api;
 grant update on classes.classes_students to eh_classes_api;
 grant delete on classes.classes_students to eh_classes_api;
 
-create table classes.assignments
+create table classes.classes_teachers (
+    class_id bigint references classes.classes (id) on delete cascade,
+    teacher_user_id uuid references auth.users (id) on delete cascade,
+    primary key (class_id, teacher_user_id)
+);
+
+grant select on classes.classes_teachers to eh_classes_api;
+grant insert on classes.classes_teachers to eh_classes_api;
+grant update on classes.classes_teachers to eh_classes_api;
+grant delete on classes.classes_teachers to eh_classes_api;
+
+create table classes.assignments (
+    id bigserial primary key,
+    class_id bigint references classes.classes (id) on delete cascade,
+    title text not null,
+    description text,
+    due timestamptz,
+    points smallint,
+    created_at timestamptz,
+    updated_at timestamptz
+);
+
+grant select on classes.assignments to eh_classes_api;
+grant insert on classes.assignments to eh_classes_api;
+grant update on classes.assignments to eh_classes_api;
+grant delete on classes.assignments to eh_classes_api;
+
+create table classes.assignment_submissions (
+    id bigserial primary key,
+    assignment_id bigint references classes.assignments (id) on delete cascade,
+    attachments jsonb,
+    submitted boolean,
+    submitted_at timestamptz,
+    pointsEarned smallint
+);
+
+grant select on classes.assignment_submissions to eh_classes_api;
+grant insert on classes.assignment_submissions to eh_classes_api;
+grant update on classes.assignment_submissions to eh_classes_api;
+grant delete on classes.assignment_submissions to eh_classes_api;
+
+create type submission_action_type as enum ('submit', 'unsubmit', 'add_grade', 'update_grade', 'remove_grade', 'add_attachment', 'update_attachment', 'remove_attachment');
+
+create table classes.assignment_submission_history (
+    id bigserial primary key,
+    assignment_submission_id bigint references classes.assignment_submissions (id) on delete cascade,
+    action_type submission_action_type not null,
+    timestamp timestamptz not null
+);
+
+grant select on classes.assignment_submission_history to eh_classes_api;
+grant insert on classes.assignment_submission_history to eh_classes_api;
 
