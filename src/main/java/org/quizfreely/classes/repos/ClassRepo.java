@@ -66,7 +66,9 @@ public class ClassRepo {
             "    WHERE teacher_user_id = ? AND class_id = ?" +
             ")",
             class_id,
-            student_user_id
+            student_user_id,
+            authed_user_id,
+            class_id
         ) > 0;
     }
     public boolean addTeacherToClassUsingAuthedId(
