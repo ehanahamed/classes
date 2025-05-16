@@ -57,6 +57,12 @@ public class ClassRepo {
     }
     public boolean createClass(String name, long courseId) {
 
+        return jdbcTemplate.update(
+            "INSERT INTO classes (name, course_id) " + 
+            "VALUES (?, ?)",
+            name,
+            courseId
+        ) > 0;
     }
     public boolean addStudentToClassUsingAuthedId(
         UUID studentUserId, long classId, UUID authedUserId
