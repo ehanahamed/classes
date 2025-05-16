@@ -55,5 +55,35 @@ public class ClassRepo {
             teacherUserId
         );
     }
+    public boolean addStudentToClassUsingAuthedId(
+        UUID student_user_id, long class_id, UUID authed_user_id
+    ) {
+        return jdbcTemplate.update(
+            "INSERT INTO classes_students (class_id, student_user_id) " + 
+            "VALUES (?, ?) " +
+            "WHERE EXISTS (" +
+            "    SELECT 1 FROM classes_teachers " +
+            "    WHERE teacher_user_id = ? AND class_id = ?" +
+            ")",
+            class_id,
+            student_user_id
+        ) > 0;
+    }
+    public boolean addTeacherToClassUsingAuthedId(
+        UUID teacher_user_id, long class_id, UUID authed_user_id
+    ) {
+        return jdbcTemplate.update(
+            "INSERT INTO classes_teachers (class_id, teacher_user_id) " + 
+            "VALUES (?, ?) " +
+            "WHERE EXISTS (" +
+            "    SELECT 1 FROM classes_teachers " +
+            "    WHERE teacher_user_id = ? AND class_id = ?" +
+            ")",
+            class_id,
+            teacher_user_id,
+            authed_user_id,
+            class_id
+        ) > 0;
+    }
 }
 
