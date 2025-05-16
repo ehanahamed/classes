@@ -357,20 +357,9 @@ create schema classes;
 
 grant usage on schema classes to eh_classes_api;
 
-create table classes.classes (
-  id bigserial primary key,
-  name text not null,
-  course_id uuid references classes.courses (id) on delete cascade
-);
-
-grant select on classes.classes to eh_classes_api;
-grant insert on classes.classes to eh_classes_api;
-grant update on classes.classes to eh_classes_api;
-grant delete on classes.classes to eh_classes_api;
-
 create table classes.courses (
   id bigserial primary key,
-  name text not null,
+  name text not null
 );
 
 grant select on classes.courses to eh_classes_api;
@@ -378,11 +367,22 @@ grant insert on classes.courses to eh_classes_api;
 grant update on classes.courses to eh_classes_api;
 grant delete on classes.courses to eh_classes_api;
 
+create table classes.classes (
+  id bigserial primary key,
+  name text not null,
+  course_id bigint references classes.courses (id) on delete cascade
+);
+
+grant select on classes.classes to eh_classes_api;
+grant insert on classes.classes to eh_classes_api;
+grant update on classes.classes to eh_classes_api;
+grant delete on classes.classes to eh_classes_api;
+
 create table classes.classes_students (
     class_id bigint references classes.classes (id) on delete cascade,
     student_user_id uuid references auth.users (id) on delete cascade,
     primary key (class_id, student_user_id)
-)
+);
 
 grant select on classes.classes_students to eh_classes_api;
 grant insert on classes.classes_students to eh_classes_api;
