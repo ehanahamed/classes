@@ -20,7 +20,7 @@ public class AuthController {
     AuthRepo authRepo;
 
     @QueryMapping
-    public AuthedUser getAuthedUser(DataFetchingEnvironment dataFetchingEnv) {
+    public AuthedUser authedUser(DataFetchingEnvironment dataFetchingEnv) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
             return authContext.getAuthedUser();

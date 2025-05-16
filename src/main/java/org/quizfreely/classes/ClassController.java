@@ -24,12 +24,12 @@ public class ClassController {
     CourseRepo courseRepo;
 
     @QueryMapping
-    public ClassModel getClassById(@Argument long id) {
+    public ClassModel classById(@Argument long id) {
         return classRepo.getClassById(id);
     }
 
     @QueryMapping
-    public List<ClassModel> getClassesAsTeacher(DataFetchingEnvironment dataFetchingEnv) {
+    public List<ClassModel> classesAsTeacher(DataFetchingEnvironment dataFetchingEnv) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
             return classRepo.getClassesByTeacherId(
@@ -40,7 +40,7 @@ public class ClassController {
         }
     }
     @QueryMapping
-    public List<ClassModel> getClassesAsStudent(DataFetchingEnvironment dataFetchingEnv) {
+    public List<ClassModel> classesAsStudent(DataFetchingEnvironment dataFetchingEnv) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
             return classRepo.getClassesByStudentId(

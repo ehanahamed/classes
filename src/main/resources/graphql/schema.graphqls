@@ -1,12 +1,12 @@
 type Query {
-    getClassById(id: ID!): ClassType
-    getClassesAsStudent: [ClassType]
-    getClassesAsTeacher: [ClassType]
-    getCourseById(id: ID!): Course
-    getCoursesAsStudent: [Course]
-    getCoursesAsTeacher: [Course]
-    getCoursesAsAuthor: [Course]
-    getAuthedUser: AuthedUser
+    classById(id: ID!): ClassType
+    classesAsStudent: [ClassType]
+    classesAsTeacher: [ClassType]
+    courseById(id: ID!): Course
+    coursesAsStudent: [Course]
+    coursesAsTeacher: [Course]
+    coursesAsAuthor: [Course]
+    authedUser: AuthedUser
 }
 
 type ClassType {

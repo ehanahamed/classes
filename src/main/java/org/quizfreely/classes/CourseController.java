@@ -14,7 +14,7 @@ public class CourseController {
     private CourseRepo courseRepo;
 
     @QueryMapping
-    public Course getCourseById(@Argument long id) {
+    public Course courseById(@Argument long id) {
         return courseRepo.getCourseById(id);
     }
 }
