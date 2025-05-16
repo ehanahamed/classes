@@ -17,7 +17,7 @@ public class AuthRepo {
                 return jdbcTemplate.queryForObject(
                     "SELECT u.id, u.display_name, u.auth_type, u.username, u.oauth_google_email " +
                     "FROM auth.users u JOIN auth.sessions s ON u.id = s.user_id " +
-                    "WHERE s.token = ?",
+                    "WHERE s.token = ? and s.expire_at > (select now())",
                     new Object[] { authToken },
                     (resultSet, rowNum) -> new AuthContext(
                         true,
