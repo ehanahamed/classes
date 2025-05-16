@@ -51,6 +51,33 @@ public class ClassController {
         }
     }
 
+    @QueryMapping
+    public boolean addStudentToClass(@Argument UUID studentUserId, @Argument long classId, DataFetchingEnvironment dataFetchingEnv) {
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+        if (authContext.isAuthed()) {
+            return classRepo.addStudentToClassUsingAuthedId(
+                studentUserId,
+                classId,
+                authContext.getAuthedUser().getId()
+            );
+        } else {
+            return false;
+        }
+    }
+    @QueryMapping
+    public boolean addTeacherToClass(@Argument UUID studentUserId, @Argument long classId, DataFetchingEnvironment dataFetchingEnv) {
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+        if (authContext.isAuthed()) {
+            return classRepo.addTeacherToClassUsingAuthedId(
+                teacherUserId,
+                classId,
+                authContext.getAuthedUser().getId()
+            );
+        } else {
+            return false;
+        }
+    }
+
     @SchemaMapping
     public Course course(ClassModel classModel) {
         return courseRepo.getCourseById(classModel.getCourseId());
