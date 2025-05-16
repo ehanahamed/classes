@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
+import java.util.List;
 import org.quizfreely.classes.models.User;
 
 @Repository
@@ -31,6 +32,12 @@ public class UserRepo {
                 }
             }
         );
+    }
+
+    public List<User> getStudentsByClassId(long classId) {
+        return jdbcTemplate.query(
+            "Se"
+        )
     }
 }
 

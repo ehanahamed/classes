@@ -55,5 +55,15 @@ public class ClassController {
     public Course course(ClassModel classModel) {
         return courseRepo.getCourseById(classModel.getCourseId());
     }
+
+    @SchemaMapping
+    public List<User> students(ClassModel classModel) {
+        return userRepo.getStudentsByClassId(classModel.id);
+    }
+
+    @SchemaMapping
+    public List<User> teachers(ClassModel classModel) {
+        return userRepo.getTeachersByClassId(classModel.id);
+    }
 }
 
