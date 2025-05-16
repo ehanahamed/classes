@@ -389,3 +389,5 @@ grant insert on classes.classes_students to eh_classes_api;
 grant update on classes.classes_students to eh_classes_api;
 grant delete on classes.classes_students to eh_classes_api;
 
+create table classes.assignments
+
