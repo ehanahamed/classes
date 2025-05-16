@@ -59,7 +59,7 @@ public class ClassRepo {
 
     }
     public boolean addStudentToClassUsingAuthedId(
-        UUID student_user_id, long classId, UUID authed_user_id
+        UUID studentUserId, long classId, UUID authedUserId
     ) {
         return jdbcTemplate.update(
             "INSERT INTO classes_students (class_id, student_user_id) " + 
@@ -69,13 +69,13 @@ public class ClassRepo {
             "    WHERE teacher_user_id = ? AND class_id = ?" +
             ")",
             classId,
-            student_user_id,
-            authed_user_id,
+            studentUserId,
+            authedUserId,
             classId
         ) > 0;
     }
     public boolean addTeacherToClassUsingAuthedId(
-        UUID teacher_user_id, long class_id, UUID authed_user_id
+        UUID teacherUserId, long classId, UUID authedUserId
     ) {
         return jdbcTemplate.update(
             "INSERT INTO classes_teachers (class_id, teacher_user_id) " + 
@@ -84,10 +84,10 @@ public class ClassRepo {
             "    SELECT 1 FROM classes_teachers " +
             "    WHERE teacher_user_id = ? AND class_id = ?" +
             ")",
-            class_id,
-            teacher_user_id,
-            authed_user_id,
-            class_id
+            classId,
+            teacherUserId,
+            authedUserId,
+            classId
         ) > 0;
     }
 }
