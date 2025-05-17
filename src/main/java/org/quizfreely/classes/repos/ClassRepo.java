@@ -52,18 +52,27 @@ public class ClassRepo {
             "SELECT c.id, c.name, c.course_id FROM classes.classes c " +
             "JOIN classes.classes_teachers ct ON ct.class_id = c.id " +
             "WHERE ct.teacher_user_id = ?",
-            teacherUserId,
+            new Object[] { teacherUserId },
             classRowMapper
         );
     }
-    public ClassModel createClass(String name, long courseId) {
-
-        return jdbcTemplate.queryForObject(
-            "INSERT INTO classes (name, course_id) " + 
+    public ClassModel createClass(String name, long courseId, UUID authedUserId) {
+        ClassModel newClass = jdbcTemplate.queryForObject(
+            "INSERT INTO classes.classes (name, course_id) " + 
             "VALUES (?, ?) RETURNING id, name, course_id",
             new Object[] { name, courseId },
             classRowMapper
         );
+        if (jdbcTemplate.update(
+            "INSERT INTO classes.classes_teachers (class_id, teacher_user_id) " +
+            "VALUES (?, ?)",
+            newClass.getId(),
+            authedUserId
+        ) > 0) {
+            return newClass;
+        } else {
+            return null;
+        }
     }
     public boolean addStudentToClassUsingAuthedId(
         UUID studentUserId, long classId, UUID authedUserId

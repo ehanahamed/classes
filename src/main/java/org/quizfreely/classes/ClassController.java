@@ -70,6 +70,21 @@ public class ClassController {
             return false;
         }
     }
+
+    @MutationMapping
+    public ClassModel createClass(@Argument String name, @Argument long courseId, DataFetchingEnvironment dataFetchingEnv) {
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+        if (authContext.isAuthed()) {
+            return classRepo.createClass(
+                name,
+                courseId,
+                authContext.getAuthedUser().getId()
+            );
+        } else {
+            return null;
+        }
+    }
+
     @MutationMapping
     public boolean addTeacherToClass(@Argument UUID teacherUserId, @Argument long classId, DataFetchingEnvironment dataFetchingEnv) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");

@@ -366,6 +366,29 @@ grant select on classes.courses to eh_classes_api;
 grant insert on classes.courses to eh_classes_api;
 grant update on classes.courses to eh_classes_api;
 grant delete on classes.courses to eh_classes_api;
+grant usage, select on sequence classes.courses_id_seq to eh_classes_api;
+
+create table classes.course_authors (
+    course_id bigint references classes.courses (id) on delete cascade,
+    author_user_id uuid references auth.users (id) on delete cascade,
+    primary key (course_id, author_user_id)
+);
+
+grant select on classes.course_authors to eh_classes_api;
+grant insert on classes.course_authors to eh_classes_api;
+grant update on classes.course_authors to eh_classes_api;
+grant delete on classes.course_authors to eh_classes_api;
+
+create table classes.course_viewers (
+    course_id bigint references classes.courses (id) on delete cascade,
+    user_id uuid references auth.users (id) on delete cascade,
+    primary key (course_id, user_id)
+);
+
+grant select on classes.course_viewers to eh_classes_api;
+grant insert on classes.course_viewers to eh_classes_api;
+grant update on classes.course_viewers to eh_classes_api;
+grant delete on classes.course_viewers to eh_classes_api;
 
 create table classes.classes (
   id bigserial primary key,
@@ -377,6 +400,7 @@ grant select on classes.classes to eh_classes_api;
 grant insert on classes.classes to eh_classes_api;
 grant update on classes.classes to eh_classes_api;
 grant delete on classes.classes to eh_classes_api;
+grant usage, select on sequence classes.classes_id_seq to eh_classes_api;
 
 create table classes.classes_students (
     class_id bigint references classes.classes (id) on delete cascade,
@@ -415,6 +439,7 @@ grant select on classes.assignments to eh_classes_api;
 grant insert on classes.assignments to eh_classes_api;
 grant update on classes.assignments to eh_classes_api;
 grant delete on classes.assignments to eh_classes_api;
+grant usage, select on sequence classes.assignments_id_seq to eh_classes_api;
 
 create table classes.assignment_submissions (
     id bigserial primary key,
@@ -429,6 +454,7 @@ grant select on classes.assignment_submissions to eh_classes_api;
 grant insert on classes.assignment_submissions to eh_classes_api;
 grant update on classes.assignment_submissions to eh_classes_api;
 grant delete on classes.assignment_submissions to eh_classes_api;
+grant usage, select on sequence classes.assignment_submissions_id_seq to eh_classes_api;
 
 create type submission_action_type as enum ('submit', 'unsubmit', 'add_grade', 'update_grade', 'remove_grade', 'add_attachment', 'update_attachment', 'remove_attachment');
 
@@ -441,4 +467,5 @@ create table classes.assignment_submission_history (
 
 grant select on classes.assignment_submission_history to eh_classes_api;
 grant insert on classes.assignment_submission_history to eh_classes_api;
+grant usage, select on sequence classes.assignment_submission_history_id_seq to eh_classes_api;
 

@@ -7,6 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 import org.quizfreely.classes.models.Course;
 
 @Repository
@@ -19,7 +20,7 @@ public class CourseRepo {
             return new Course(
                 resultSet.getLong("id"),
                 resultSet.getString("name")
-            )
+            );
         }
     };
 
@@ -34,13 +35,24 @@ public class CourseRepo {
             return null;
         }
     }
-    public Course createCourse(String name) {
-        return jdbcTemplate.queryForObject(
-            "INSERT INTO classes.courses (name) VALUES ? " +
-            "RETURNING id, name",
+    public Course createCourse(String name, UUID authedUserId) {
+        Course newCourse = jdbcTemplate.queryForObject(
+            "INSERT INTO classes.courses (name) VALUES (?) RETURNING id, name",
             new Object[] { name },
             courseRowMapper
         );
+        if (
+            jdbcTemplate.update(
+                "INSERT INTO classes.course_authors (course_id, author_user_id) " +
+                "VALUES (?, ?)",
+                newCourse.getId(),
+                authedUserId
+            ) > 0
+        ) {
+            return newCourse;
+        } else {
+            return null;
+        }
     }
 }
 

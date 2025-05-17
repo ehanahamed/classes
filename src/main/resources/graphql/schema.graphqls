@@ -47,5 +47,5 @@ enum AuthType {
 type Course {
     id: ID!
     name: String!
-    authors: [User]
 }
+
