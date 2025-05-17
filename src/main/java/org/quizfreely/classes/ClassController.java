@@ -86,6 +86,20 @@ public class ClassController {
     }
 
     @MutationMapping
+    public ClassModel updateClass(@Argument long id, @Argument String name, @Argument long courseId, DataFetchingEnvironment dataFetchingEnv) {
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+        if (authContext.isAuthed()) {
+            return classRepo.updateClass(
+                name,
+                new ClassModel(name, courseId)
+                authContext.getAuthedUser().getId()
+            );
+        } else {
+            return null;
+        }
+    }
+
+    @MutationMapping
     public boolean addTeacherToClass(@Argument UUID teacherUserId, @Argument long classId, DataFetchingEnvironment dataFetchingEnv) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {

@@ -38,6 +38,28 @@ public class ClassRepo {
         }
     }
 
+    public ClassModel updateClass(long id, ClassModel classModel, UUID authedUserId) {
+        try {
+            return jdbcTemplate.queryForObject(
+                "UPDATE classes.classes SET name = ?, course_id = ? " +
+                "WHERE id = ? AND EXISTS (" +
+                "    SELECT 1 FROM classes.classes_teachers ct " +
+                "    WHERE ct.class_id = ? AND ct.teacher_user_id = ? " +
+                ") " +
+                "RETURNING id, name, course_id",
+                new Object[] {
+                    classModel.getName(),
+                    classModel.getCourseId(),
+                    id,
+                    id,
+                    authedUserId
+                }
+            )
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     public List<ClassModel> getClassesByStudentId(UUID studentUserId) {
         return jdbcTemplate.query(
             "SELECT c.id, c.name, c.course_id FROM classes.classes c " +
