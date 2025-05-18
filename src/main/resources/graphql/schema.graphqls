@@ -11,10 +11,10 @@ type Query {
 
 type Mutation {
     createCourse(name: String!): Course
-    updateCourse(courseId: ID!, name: String!): Course
+    updateCourse(id: ID!, name: String!): Course
     deleteCourse(courseId: ID!): Boolean
     createClass(name: String!, courseId: ID!): ClassType
-    updateClass(classId: ID!, name: String!, courseId: ID!): ClassType
+    updateClass(id: ID!, name: String!, courseId: ID!): ClassType
     deleteClass(classId: ID!): Boolean
     addStudentToClass(studentUserId: ID!, classId: ID!): Boolean
     addTeacherToClass(teacherUserId: ID!, classId: ID!): Boolean

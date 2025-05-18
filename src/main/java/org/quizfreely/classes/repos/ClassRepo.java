@@ -21,7 +21,7 @@ public class ClassRepo {
             return new ClassModel(
                 resultSet.getLong("id"),
                 resultSet.getString("name"),
-                resultSet.getLong("courseId")
+                resultSet.getLong("course_id")
             );
         }
     };
@@ -53,8 +53,9 @@ public class ClassRepo {
                     id,
                     id,
                     authedUserId
-                }
-            )
+                },
+                classRowMapper
+            );
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

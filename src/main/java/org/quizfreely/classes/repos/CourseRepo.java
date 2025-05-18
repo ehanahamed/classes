@@ -54,5 +54,27 @@ public class CourseRepo {
             return null;
         }
     }
+
+    public Course updateCourse(long id, Course course, UUID authedUserId) {
+        try {
+            return jdbcTemplate.queryForObject(
+                "UPDATE classes.courses SET name = ? " +
+                "WHERE id = ? AND EXISTS (" +
+                "    SELECT 1 FROM classes.course_authors ca " +
+                "    WHERE ca.course_id = ? AND ca.author_user_id = ? " +
+                ") " +
+                "RETURNING id, name",
+                new Object[] {
+                    course.getName(),
+                    id,
+                    id,
+                    authedUserId
+                },
+                courseRowMapper
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 }
 

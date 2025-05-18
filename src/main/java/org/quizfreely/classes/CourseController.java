@@ -33,5 +33,19 @@ public class CourseController {
             return null;
         }
     }
+    
+    @MutationMapping
+    public Course updateCourse(@Argument long id, @Argument String name, DataFetchingEnvironment dataFetchingEnv) {
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+        if (authContext.isAuthed()) {
+            return courseRepo.updateCourse(
+                id,
+                new Course(name),
+                authContext.getAuthedUser().getId()
+            );
+        } else {
+            return null;
+        }
+    }
 }
 

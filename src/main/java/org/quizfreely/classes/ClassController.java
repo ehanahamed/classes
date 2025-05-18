@@ -90,8 +90,8 @@ public class ClassController {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
             return classRepo.updateClass(
-                name,
-                new ClassModel(name, courseId)
+                id,
+                new ClassModel(name, courseId),
                 authContext.getAuthedUser().getId()
             );
         } else {
@@ -115,6 +115,9 @@ public class ClassController {
 
     @SchemaMapping
     public Course course(ClassModel classModel) {
+        System.out.println("aptaptapt");
+        System.out.println(classModel.getCourseId());
+        System.out.println("aptaptapt");
         return courseRepo.getCourseById(classModel.getCourseId());
     }
 
