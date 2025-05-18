@@ -1,7 +1,7 @@
 type Query {
-    classById(id: ID!): ClassType
-    classesAsStudent: [ClassType]
-    classesAsTeacher: [ClassType]
+    classById(id: ID!): ClassClass
+    classesAsStudent: [ClassClass]
+    classesAsTeacher: [ClassClass]
     courseById(id: ID!): Course
     coursesAsStudent: [Course]
     coursesAsTeacher: [Course]
@@ -13,14 +13,14 @@ type Mutation {
     createCourse(name: String!): Course
     updateCourse(id: ID!, name: String!): Course
     deleteCourse(courseId: ID!): Boolean
-    createClass(name: String!, courseId: ID!): ClassType
-    updateClass(id: ID!, name: String!, courseId: ID!): ClassType
+    createClass(name: String!, courseId: ID!): ClassClass
+    updateClass(id: ID!, name: String!, courseId: ID!): ClassClass
     deleteClass(classId: ID!): Boolean
     addStudentToClass(studentUserId: ID!, classId: ID!): Boolean
     addTeacherToClass(teacherUserId: ID!, classId: ID!): Boolean
 }
 
-type ClassType {
+type ClassClass {
     id: ID!
     name: String!
     course: Course

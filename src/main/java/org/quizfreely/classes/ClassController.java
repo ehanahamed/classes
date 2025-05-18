@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.quizfreely.classes.auth.AuthContext;
-import org.quizfreely.classes.models.ClassModel;
+import org.quizfreely.classes.models.ClassClass;
 import org.quizfreely.classes.models.Course;
 import org.quizfreely.classes.models.User;
 import org.quizfreely.classes.repos.ClassRepo;
@@ -30,12 +30,12 @@ public class ClassController {
     UserRepo userRepo;
 
     @QueryMapping
-    public ClassModel classById(@Argument long id) {
+    public ClassClass classById(@Argument long id) {
         return classRepo.getClassById(id);
     }
 
     @QueryMapping
-    public List<ClassModel> classesAsTeacher(DataFetchingEnvironment dataFetchingEnv) {
+    public List<ClassClass> classesAsTeacher(DataFetchingEnvironment dataFetchingEnv) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
             return classRepo.getClassesByTeacherId(
@@ -46,7 +46,7 @@ public class ClassController {
         }
     }
     @QueryMapping
-    public List<ClassModel> classesAsStudent(DataFetchingEnvironment dataFetchingEnv) {
+    public List<ClassClass> classesAsStudent(DataFetchingEnvironment dataFetchingEnv) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
             return classRepo.getClassesByStudentId(
@@ -72,7 +72,7 @@ public class ClassController {
     }
 
     @MutationMapping
-    public ClassModel createClass(@Argument String name, @Argument long courseId, DataFetchingEnvironment dataFetchingEnv) {
+    public ClassClass createClass(@Argument String name, @Argument long courseId, DataFetchingEnvironment dataFetchingEnv) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
             return classRepo.createClass(
@@ -86,12 +86,12 @@ public class ClassController {
     }
 
     @MutationMapping
-    public ClassModel updateClass(@Argument long id, @Argument String name, @Argument long courseId, DataFetchingEnvironment dataFetchingEnv) {
+    public ClassClass updateClass(@Argument long id, @Argument String name, @Argument long courseId, DataFetchingEnvironment dataFetchingEnv) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
             return classRepo.updateClass(
                 id,
-                new ClassModel(name, courseId),
+                new ClassClass(name, courseId),
                 authContext.getAuthedUser().getId()
             );
         } else {
@@ -114,20 +114,17 @@ public class ClassController {
     }
 
     @SchemaMapping
-    public Course course(ClassModel classModel) {
-        System.out.println("aptaptapt");
-        System.out.println(classModel.getCourseId());
-        System.out.println("aptaptapt");
+    public Course course(ClassClass classModel) {
         return courseRepo.getCourseById(classModel.getCourseId());
     }
 
     @SchemaMapping
-    public List<User> students(ClassModel classModel) {
+    public List<User> students(ClassClass classModel) {
         return userRepo.getStudentsByClassId(classModel.getId());
     }
 
     @SchemaMapping
-    public List<User> teachers(ClassModel classModel) {
+    public List<User> teachers(ClassClass classModel) {
         return userRepo.getTeachersByClassId(classModel.getId());
     }
 }

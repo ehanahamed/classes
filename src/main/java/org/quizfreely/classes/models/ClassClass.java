@@ -1,13 +1,13 @@
 package org.quizfreely.classes.models;
 
-public class ClassModel {
+public class ClassClass {
     private long id;
     private String name;
     private long courseId;
     
-    public ClassModel() {}
+    public ClassClass() {}
 
-    public ClassModel(
+    public ClassClass(
         String name,
         long courseId
     ) {
@@ -15,7 +15,7 @@ public class ClassModel {
         this.courseId = courseId;
     }
 
-    public ClassModel(
+    public ClassClass(
         long id,
         String name,
         long courseId
