@@ -393,7 +393,8 @@ grant delete on classes.course_viewers to eh_classes_api;
 create table classes.classes (
   id bigserial primary key,
   name text not null,
-  course_id bigint references classes.courses (id) on delete cascade
+  course_id bigint references classes.courses (id) on delete cascade,
+  color text
 );
 
 grant select on classes.classes to eh_classes_api;
@@ -468,4 +469,11 @@ create table classes.assignment_submission_history (
 grant select on classes.assignment_submission_history to eh_classes_api;
 grant insert on classes.assignment_submission_history to eh_classes_api;
 grant usage, select on sequence classes.assignment_submission_history_id_seq to eh_classes_api;
+
+create table classes.class_user_settings (
+    class_id bigint references classes.classes (id) on delete cascade,
+    user_id uuid references auth.users (id) on delete cascade,
+    color text,
+    primary key (class_id, user_id)
+)
 

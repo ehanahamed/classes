@@ -4,6 +4,7 @@ public class ClassClass {
     private long id;
     private String name;
     private long courseId;
+    private String color;
     
     public ClassClass() {}
 
@@ -14,6 +15,15 @@ public class ClassClass {
         this.name = name;
         this.courseId = courseId;
     }
+    public ClassClass(
+        String name,
+        long courseId,
+        String color
+    ) {
+        this.name = name;
+        this.courseId = courseId;
+        this.color = color;
+    }
 
     public ClassClass(
         long id,
@@ -23,6 +33,17 @@ public class ClassClass {
         this.id = id;
         this.name = name;
         this.courseId = courseId;
+    }
+    public ClassClass(
+        long id,
+        String name,
+        long courseId,
+        Color color
+    ) {
+        this.id = id;
+        this.name = name;
+        this.courseId = courseId;
+        this.color = color;
     }
 
     public long getId() {
@@ -42,6 +63,12 @@ public class ClassClass {
     }
     public void setCourseId(long courseId) {
         this.courseId = courseId;
+    }
+    public String getColor() {
+        return courseId;
+    }
+    public void setColor(String color) {
+        this.color = color;
     }
 }
 
