@@ -18,12 +18,15 @@ public class ClassRepo {
 
     private RowMapper<ClassClass> classRowMapper = new RowMapper<ClassClass>() {
         public ClassClass mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            return new ClassClass(
+            ClassClass classClass = new ClassClass(
                 resultSet.getLong("id"),
                 resultSet.getString("name"),
-                resultSet.getLong("course_id"),
+                resultSet.getLong("course_id")
+            );
+            classClass.setColor(
                 resultSet.getString("color")
             );
+            return classClass;
         }
     };
 
@@ -42,7 +45,7 @@ public class ClassRepo {
     public ClassClass updateClass(long id, ClassClass classModel, UUID authedUserId) {
         try {
             return jdbcTemplate.queryForObject(
-                "UPDATE classes.classes SET name = ?, course_id = ?, color = " +
+                "UPDATE classes.classes SET name = ?, course_id = ?, color = ? " +
                 "WHERE id = ? AND EXISTS (" +
                 "    SELECT 1 FROM classes.classes_teachers ct " +
                 "    WHERE ct.class_id = ? AND ct.teacher_user_id = ? " +

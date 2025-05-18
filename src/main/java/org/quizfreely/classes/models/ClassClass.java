@@ -38,7 +38,7 @@ public class ClassClass {
         long id,
         String name,
         long courseId,
-        Color color
+        String color
     ) {
         this.id = id;
         this.name = name;
@@ -65,7 +65,7 @@ public class ClassClass {
         this.courseId = courseId;
     }
     public String getColor() {
-        return courseId;
+        return color;
     }
     public void setColor(String color) {
         this.color = color;

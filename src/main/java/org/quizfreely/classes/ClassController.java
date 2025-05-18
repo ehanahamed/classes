@@ -16,9 +16,11 @@ import org.quizfreely.classes.auth.AuthContext;
 import org.quizfreely.classes.models.ClassClass;
 import org.quizfreely.classes.models.Course;
 import org.quizfreely.classes.models.User;
+import org.quizfreely.classes.models.ClassUserSettings;
 import org.quizfreely.classes.repos.ClassRepo;
 import org.quizfreely.classes.repos.CourseRepo;
 import org.quizfreely.classes.repos.UserRepo;
+import org.quizfreely.classes.repos.ClassUserSettingsRepo;
 
 @Controller
 public class ClassController {
@@ -28,6 +30,8 @@ public class ClassController {
     CourseRepo courseRepo;
     @Autowired
     UserRepo userRepo;
+    @Autowired
+    ClassUserSettingsRepo classUserSettingsRepo;
 
     @QueryMapping
     public ClassClass classById(@Argument long id) {
@@ -86,12 +90,18 @@ public class ClassController {
     }
 
     @MutationMapping
-    public ClassClass updateClass(@Argument long id, @Argument String name, @Argument long courseId, DataFetchingEnvironment dataFetchingEnv) {
+    public ClassClass updateClass(
+        @Argument long id,
+        @Argument String name,
+        @Argument long courseId,
+        @Argument String color,
+        DataFetchingEnvironment dataFetchingEnv
+    ) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
             return classRepo.updateClass(
                 id,
-                new ClassClass(name, courseId),
+                new ClassClass(name, courseId, color),
                 authContext.getAuthedUser().getId()
             );
         } else {
@@ -126,6 +136,19 @@ public class ClassController {
     @SchemaMapping
     public List<User> teachers(ClassClass classModel) {
         return userRepo.getTeachersByClassId(classModel.getId());
+    }
+
+    @SchemaMapping
+    public ClassUserSettings userSettings(ClassClass classClass, DataFetchingEnvironment dataFetchingEnv) {
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+        if (authContext.isAuthed()) {
+            return classUserSettingsRepo.getClassUserSettings(
+                classClass.getId(),
+                authContext.getAuthedUser().getId()
+            );
+        } else {
+            return null;
+        }
     }
 }
 

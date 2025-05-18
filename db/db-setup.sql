@@ -475,5 +475,10 @@ create table classes.class_user_settings (
     user_id uuid references auth.users (id) on delete cascade,
     color text,
     primary key (class_id, user_id)
-)
+);
+
+grant select on classes.class_user_settings to eh_classes_api;
+grant insert on classes.class_user_settings to eh_classes_api;
+grant update on classes.class_user_settings to eh_classes_api;
+grant delete on classes.class_user_settings to eh_classes_api;
 

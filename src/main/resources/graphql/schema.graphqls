@@ -7,6 +7,7 @@ type Query {
     coursesAsTeacher: [Course]
     coursesAsAuthor: [Course]
     authedUser: AuthedUser
+    classUserSettings(classId: ID!): ClassUserSettings
 }
 
 type Mutation {
@@ -14,18 +15,21 @@ type Mutation {
     updateCourse(id: ID!, name: String!): Course
     deleteCourse(courseId: ID!): Boolean
     createClass(name: String!, courseId: ID!): ClassClass
-    updateClass(id: ID!, name: String!, courseId: ID!): ClassClass
+    updateClass(id: ID!, name: String!, courseId: ID!, color: String!): ClassClass
     deleteClass(classId: ID!): Boolean
     addStudentToClass(studentUserId: ID!, classId: ID!): Boolean
     addTeacherToClass(teacherUserId: ID!, classId: ID!): Boolean
+    updateClassUserSettings(classId: ID!, color: String!): ClassUserSettings
 }
 
 type ClassClass {
     id: ID!
     name: String!
     course: Course
+    color: String
     teachers: [User]
     students: [User]
+    userSettings: ClassUserSettings
 }
 
 type User {
@@ -51,5 +55,9 @@ enum AuthType {
 type Course {
     id: ID!
     name: String!
+}
+
+type ClassUserSettings {
+    color: String
 }
 
