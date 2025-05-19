@@ -10,6 +10,11 @@ public class ClassClass {
 
     public ClassClass(
         String name,
+    ) {
+        this.name = name;
+    }
+    public ClassClass(
+        String name,
         long courseId
     ) {
         this.name = name;

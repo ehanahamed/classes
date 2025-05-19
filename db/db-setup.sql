@@ -393,7 +393,7 @@ grant delete on classes.course_viewers to eh_classes_api;
 create table classes.classes (
   id bigserial primary key,
   name text not null,
-  course_id bigint references classes.courses (id) on delete cascade,
+  course_id bigint references classes.courses (id) on delete set null,
   color text
 );
 

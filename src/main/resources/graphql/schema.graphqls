@@ -14,8 +14,8 @@ type Mutation {
     createCourse(name: String!): Course
     updateCourse(id: ID!, name: String!): Course
     deleteCourse(courseId: ID!): Boolean
-    createClass(name: String!, courseId: ID!): ClassClass
-    updateClass(id: ID!, name: String!, courseId: ID!, color: String!): ClassClass
+    createClass(name: String!, courseId: ID): ClassClass
+    updateClass(id: ID!, name: String!, courseId: ID, color: String!): ClassClass
     deleteClass(classId: ID!): Boolean
     addStudentToClass(studentUserId: ID!, classId: ID!): Boolean
     addTeacherToClass(teacherUserId: ID!, classId: ID!): Boolean
@@ -35,16 +35,16 @@ type ClassClass {
 type User {
     id: ID!
     username: String
-    display_name: String
-    oauth_google_email: String
+    displayName: String
+    oauthGoogleEmail: String
 }
 
 type AuthedUser {
     id: ID!
     username: String
-    display_name: String
-    oauth_google_email: String
-    auth_type: AuthType
+    displayName: String
+    oauthGoogleEmail: String
+    authType: AuthType
 }
 
 enum AuthType {
