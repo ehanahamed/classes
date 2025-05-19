@@ -9,7 +9,7 @@ public class ClassClass {
     public ClassClass() {}
 
     public ClassClass(
-        String name,
+        String name
     ) {
         this.name = name;
     }
