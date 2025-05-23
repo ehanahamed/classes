@@ -429,7 +429,7 @@ create table classes.assignments (
     id bigserial primary key,
     class_id bigint references classes.classes (id) on delete cascade,
     title text not null,
-    description text,
+    description_json jsonb,
     due timestamptz,
     points smallint,
     created_at timestamptz,
@@ -481,4 +481,11 @@ grant select on classes.class_user_settings to eh_classes_api;
 grant insert on classes.class_user_settings to eh_classes_api;
 grant update on classes.class_user_settings to eh_classes_api;
 grant delete on classes.class_user_settings to eh_classes_api;
+
+create table classes.announcements (
+    id bigserial primary key,
+    user_id uuid references auth.users (id) on delete cascade,
+    class_id bigint references classes.classes (id) on delete,
+    content_prosemirror_json jsonb
+)
 

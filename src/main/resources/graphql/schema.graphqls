@@ -1,3 +1,5 @@
+scalar JSON
+
 type Query {
     classById(id: ID!): ClassClass
     classesAsStudent: [ClassClass]
@@ -8,6 +10,8 @@ type Query {
     coursesAsAuthor: [Course]
     authedUser: AuthedUser
     classUserSettings(classId: ID!): ClassUserSettings
+    announcementById(id: ID!): Announcement
+    announcementsByClass(classId: ID!): [Announcement]
 }
 
 type Mutation {
