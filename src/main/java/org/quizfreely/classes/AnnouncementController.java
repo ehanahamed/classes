@@ -11,15 +11,20 @@ import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.Map;
 
 import org.quizfreely.classes.auth.AuthContext;
 import org.quizfreely.classes.models.Announcement;
+import org.quizfreely.classes.models.User;
 import org.quizfreely.classes.repos.AnnouncementRepo;
+import org.quizfreely.classes.repos.UserRepo;
 
 @Controller
-public class ClassController {
+public class AnnouncementController {
     @Autowired
     AnnouncementRepo announcementRepo;
+    @Autowired
+    UserRepo userRepo;
 
     @QueryMapping
     public Announcement announcementById(@Argument long id) {
@@ -40,10 +45,14 @@ public class ClassController {
     }
 
     @MutationMapping
-    public Announcement createAnnouncement(@Argument long classId, @Argument Map<String, Object> contentProseMirrorJson, DataFetchingEnvironment dataFetchingEnv) {
+    public Announcement createAnnouncement(
+        @Argument long classId,
+        @Argument Map<String, Object> contentProseMirrorJson,
+        DataFetchingEnvironment dataFetchingEnv
+    ) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
-            UUID authedUserId = authContext.getAuthedUser().getId()
+            UUID authedUserId = authContext.getAuthedUser().getId();
             return announcementRepo.createClass(
                 new Announcement(
                     authedUserId,
@@ -58,18 +67,16 @@ public class ClassController {
     }
 
     @MutationMapping
-    public ClassClass updateClass(
+    public Announcement updateAnnouncement(
         @Argument long id,
-        @Argument String name,
-        @Argument long courseId,
-        @Argument String color,
+        @Argument Map<String, Object> contentProseMirrorJson,
         DataFetchingEnvironment dataFetchingEnv
     ) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
             return classRepo.updateClass(
                 id,
-                new ClassClass(name, courseId, color),
+                contentProseMirrorJson,
                 authContext.getAuthedUser().getId()
             );
         } else {
@@ -77,46 +84,9 @@ public class ClassController {
         }
     }
 
-    @MutationMapping
-    public boolean addTeacherToClass(@Argument UUID teacherUserId, @Argument long classId, DataFetchingEnvironment dataFetchingEnv) {
-        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
-        if (authContext.isAuthed()) {
-            return classRepo.addTeacherToClassUsingAuthedId(
-                teacherUserId,
-                classId,
-                authContext.getAuthedUser().getId()
-            );
-        } else {
-            return false;
-        }
-    }
-
     @SchemaMapping
-    public Course course(ClassClass classModel) {
-        return courseRepo.getCourseById(classModel.getCourseId());
-    }
-
-    @SchemaMapping
-    public List<User> students(ClassClass classModel) {
-        return userRepo.getStudentsByClassId(classModel.getId());
-    }
-
-    @SchemaMapping
-    public List<User> teachers(ClassClass classModel) {
-        return userRepo.getTeachersByClassId(classModel.getId());
-    }
-
-    @SchemaMapping
-    public ClassUserSettings userSettings(ClassClass classClass, DataFetchingEnvironment dataFetchingEnv) {
-        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
-        if (authContext.isAuthed()) {
-            return classUserSettingsRepo.getClassUserSettings(
-                classClass.getId(),
-                authContext.getAuthedUser().getId()
-            );
-        } else {
-            return null;
-        }
+    public User user(Announcement announcement) {
+        return userRepo.getUserById(announcement.getUserId());
     }
 }
 

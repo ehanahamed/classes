@@ -17,7 +17,7 @@ public class Announcement {
         this.id = id;
         this.userId = userId;
         this.classId = classId;
-        this.contentJson = contentJson
+        this.contentJson = contentJson;
     }
     public Announcement(
         UUID userId,
@@ -26,7 +26,20 @@ public class Announcement {
     ) {
         this.userId = userId;
         this.classId = classId;
-        this.contentJson = contentJson
+        this.contentJson = contentJson;
+    }
+
+    public long getId() {
+        return id;
+    }
+    public UUID getUserId() {
+        return userId;
+    }
+    public long getClassId() {
+        return classId;
+    }
+    public Map<String, Object> getContentJson() {
+        return contentJson;
     }
 }
 

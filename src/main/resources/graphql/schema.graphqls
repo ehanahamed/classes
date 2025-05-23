@@ -24,6 +24,8 @@ type Mutation {
     addStudentToClass(studentUserId: ID!, classId: ID!): Boolean
     addTeacherToClass(teacherUserId: ID!, classId: ID!): Boolean
     updateClassUserSettings(classId: ID!, color: String!): ClassUserSettings
+    createAnnouncement(classId: ID!, contentProseMirrorJson: JSON!): Announcement
+    updateAnnouncement(id: ID!, contentProseMirrorJson: JSON!): Announcement
 }
 
 type ClassClass {
@@ -63,5 +65,12 @@ type Course {
 
 type ClassUserSettings {
     color: String
+}
+
+type Announcement {
+    id: ID!
+    user: User!
+    classId: ID!
+    contentProseMirrorJson: JSON!
 }
 

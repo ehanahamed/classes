@@ -5,11 +5,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
-import org.json.JSONObject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
+import java.util.Map;
 import org.quizfreely.classes.models.Announcement;
 
 @Repository
@@ -25,7 +25,7 @@ public class AnnouncementRepo {
                     "user_id"
                 ),
                 resultSet.getLong("class_id"),
-                (JSONObject) resultSet.getObject(
+                (Map<String, Object>) resultSet.getObject(
                     "content_prosemirror_json"
                 )
             );
@@ -75,14 +75,14 @@ public class AnnouncementRepo {
         }
     }
 
-    public Announcement updateAnnouncement(long id, Announcement announcement, UUID authedUserId) {
+    public Announcement updateAnnouncement(long id, Map<String, Object> contentProseMirrorJson, UUID authedUserId) {
         try {
             return jdbcTemplate.queryForObject(
                 "UPDATE classes.announcements SET content_prosemirror_json = ? " +
                 "WHERE id = ? AND user_id = ? " +
                 "RETURNING id, user_id, class_id, content_prosemirror_json",
                 new Object[] {
-                    announcement.getContentJson(),
+                    contentProseMirrorJson,
                     id,
                     authedUserId
                 },
@@ -93,7 +93,7 @@ public class AnnouncementRepo {
         }
     }
 
-    public List<Announcement> getAnnouncementsByClassId(long classId, authedUserId) {
+    public List<Announcement> getAnnouncementsByClassId(long classId, UUID authedUserId) {
         return jdbcTemplate.query(
             "SELECT id, user_id, class_id, content_prosemirror_json " +
             "FROM classes.announcements " +
