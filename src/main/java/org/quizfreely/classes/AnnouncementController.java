@@ -53,7 +53,7 @@ public class AnnouncementController {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
             UUID authedUserId = authContext.getAuthedUser().getId();
-            return announcementRepo.createClass(
+            return announcementRepo.createAnnouncement(
                 new Announcement(
                     authedUserId,
                     classId,
@@ -74,7 +74,7 @@ public class AnnouncementController {
     ) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
-            return classRepo.updateClass(
+            return announcementRepo.updateAnnouncement(
                 id,
                 contentProseMirrorJson,
                 authContext.getAuthedUser().getId()
