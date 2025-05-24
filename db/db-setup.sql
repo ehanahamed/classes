@@ -493,4 +493,5 @@ grant select on classes.announcements to eh_classes_api;
 grant insert on classes.announcements to eh_classes_api;
 grant update on classes.announcements to eh_classes_api;
 grant delete on classes.announcements to eh_classes_api;
+grant usage, select on sequence classes.announcements_id_seq to eh_classes_api;
 

@@ -70,6 +70,6 @@ type Announcement {
     id: ID!
     user: User!
     classId: ID!
-    contentProseMirrorJson: String!
+    contentProseMirrorJson: String
 }
 

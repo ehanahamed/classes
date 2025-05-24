@@ -31,7 +31,7 @@ public class UserRepo {
         try {
             return jdbcTemplate.queryForObject(
                 "SELECT id, display_name, username, oauth_google_email " +
-                "FROM public.profiles WHERE id = ?",
+                "FROM auth.users WHERE id = ?",
                 new Object[] { id },
                 userRowMapper
             );

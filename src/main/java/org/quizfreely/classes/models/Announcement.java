@@ -5,27 +5,27 @@ public class Announcement {
     private long id;
     private UUID userId;
     private long classId;
-    private String contentJson;
+    private String contentProseMirrorJson;
 
     public Announcement(
         long id,
         UUID userId,
         long classId,
-        String contentJson
+        String contentProseMirrorJson
     ) {
         this.id = id;
         this.userId = userId;
         this.classId = classId;
-        this.contentJson = contentJson;
+        this.contentProseMirrorJson = contentProseMirrorJson;
     }
     public Announcement(
         UUID userId,
         long classId,
-        String contentJson
+        String contentProseMirrorJson
     ) {
         this.userId = userId;
         this.classId = classId;
-        this.contentJson = contentJson;
+        this.contentProseMirrorJson = contentProseMirrorJson;
     }
 
     public long getId() {
@@ -38,7 +38,7 @@ public class Announcement {
         return classId;
     }
     public String getContentJson() {
-        return contentJson;
+        return contentProseMirrorJson;
     }
 }
 
