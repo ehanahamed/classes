@@ -44,7 +44,7 @@ public class Announcement {
     public long getClassId() {
         return classId;
     }
-    public String getContentJson() {
+    public String getContentProseMirrorJson() {
         return contentProseMirrorJson;
     }
     public OffsetDateTime getCreatedAt() {

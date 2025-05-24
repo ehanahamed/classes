@@ -428,12 +428,13 @@ grant delete on classes.classes_teachers to eh_classes_api;
 create table classes.assignments (
     id bigserial primary key,
     class_id bigint references classes.classes (id) on delete cascade,
+    teacher_id uuid references auth.users (id) on delete set null,
     title text not null,
-    description_json jsonb,
-    due timestamptz,
+    description_prosemirror_json jsonb,
+    due_at timestamptz,
     points smallint,
-    created_at timestamptz,
-    updated_at timestamptz
+    created_at timestamptz default now(),
+    updated_at timestamptz default now()
 );
 
 grant select on classes.assignments to eh_classes_api;

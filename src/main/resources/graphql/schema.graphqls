@@ -11,7 +11,6 @@ type Query {
     authedUser: AuthedUser
     classUserSettings(classId: ID!): ClassUserSettings
     announcementById(id: ID!): Announcement
-    announcementsByClass(classId: ID!): [Announcement]
 }
 
 type Mutation {

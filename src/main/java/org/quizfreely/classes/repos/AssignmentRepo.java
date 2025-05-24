@@ -10,24 +10,30 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 import java.time.OffsetDateTime;
-import org.quizfreely.classes.models.Announcement;
+import org.quizfreely.classes.models.Assignment;
 
 @Repository
-public class AnnouncementRepo {
+public class AssignmentRepo {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private RowMapper<Announcement> announcementRowMapper = new RowMapper<Announcement>() {
-        public Announcement mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            return new Announcement(
+    private RowMapper<Assignment> assignmentRowMapper = new RowMapper<Assignment>() {
+        public Assignment mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            return new Assignment(
                 resultSet.getLong("id"),
+                resultSet.getLong("class_id"),
                 resultSet.getObject(
-                    "user_id",
+                    "teacher_id",
                     UUID.class
                 ),
-                resultSet.getLong("class_id"),
+                resultSet.getString("title"),
                 resultSet.getString(
-                    "content_prosemirror_json"
+                    "description_prosemirror_json"
+                ),
+                resultSet.getShort("points"),
+                resultSet.getObject(
+                    "due_at",
+                    OffsetDateTime.class
                 ),
                 resultSet.getObject(
                     "created_at",
@@ -41,41 +47,37 @@ public class AnnouncementRepo {
         }
     };
 
-    public Announcement getAnnouncementById(long id) {
+    public Assignment getAssignmentById(long id) {
         try {
             return jdbcTemplate.queryForObject(
-                "SELECT id, user_id, class_id, content_prosemirror_json, created_at, updated_at " +
-                "FROM classes.announcements WHERE id = ?",
+                "SELECT id, class_id, teacher_id, title, description_prosemirror_json, points, due_at, created_at, updated_at " +
+                "FROM classes.assignments WHERE id = ?",
                 new Object[] { id },
-                announcementRowMapper
+                assignmentRowMapper
             );
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
-    public Announcement createAnnouncement(Announcement announcement, UUID authedUserId) {
+    public Assignment createAssignment(Assignment assignment, UUID authedUserId) {
         try {
             return jdbcTemplate.queryForObject(
-                "INSERT INTO classes.announcements (user_id, class_id, content_prosemirror_json) " +
-                "SELECT ?, ?, ?::jsonb " +
-                "WHERE (" +
-                "    EXISTS (" +
-                "        SELECT 1 FROM classes.classes_teachers ct " +
-                "        WHERE ct.class_id = ? AND ct.teacher_user_id = ? " +
-                "    ) OR EXISTS (" +
-                "        SELECT 1 FROM classes.classes_students cs " +
-                "        WHERE cs.class_id = ? AND cs.student_user_id = ? " +
-                "    )" + 
+                "INSERT INTO classes.assignments (class_id, teacher_id, title, description_prosemirror_json, points, due_at) " +
+                "SELECT ?, ?, ?, ?::jsonb, ?, ? " +
+                "WHERE EXISTS (" +
+                "    SELECT 1 FROM classes.classes_teachers ct " +
+                "    WHERE ct.class_id = ? AND ct.teacher_user_id = ? " +
                 ") " +
-                "RETURNING id, user_id, class_id, content_prosemirror_json, created_at, updated_at",
+                "RETURNING id, class_id, teacher_id, title, description_prosemirror_json, points, due_at, created_at, updated_at",
                 new Object[] {
+                    assignment.getClassId(),
                     authedUserId,
-                    announcement.getClassId(),
-                    announcement.getContentProseMirrorJson(),
-                    announcement.getClassId(),
-                    authedUserId,
-                    announcement.getClassId(),
+                    assignment.getTitle(),
+                    assignment.getDescriptionProseMirrorJson(),
+                    assignment.getPoints(),
+                    assignment.getDueAt(),
+                    assignment.getClassId(),
                     authedUserId
                 },
                 announcementRowMapper

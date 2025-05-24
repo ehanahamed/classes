@@ -30,19 +30,6 @@ public class AnnouncementController {
         return announcementRepo.getAnnouncementById(id);
     }
 
-    @QueryMapping
-    public List<Announcement> announcementsByClassId(@Argument long classId, DataFetchingEnvironment dataFetchingEnv) {
-        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
-        if (authContext.isAuthed()) {
-            return announcementRepo.getAnnouncementsByClassId(
-                classId,
-                authContext.getAuthedUser().getId()
-            );
-        } else {
-            return null;
-        }
-    }
-
     @MutationMapping
     public Announcement createAnnouncement(
         @Argument long classId,
