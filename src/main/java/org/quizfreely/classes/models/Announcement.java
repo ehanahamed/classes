@@ -22,6 +22,8 @@ public class Announcement {
         this.userId = userId;
         this.classId = classId;
         this.contentProseMirrorJson = contentProseMirrorJson;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
     public Announcement(
         UUID userId,
