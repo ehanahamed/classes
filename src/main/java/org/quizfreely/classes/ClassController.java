@@ -16,11 +16,13 @@ import org.quizfreely.classes.auth.AuthContext;
 import org.quizfreely.classes.models.ClassClass;
 import org.quizfreely.classes.models.Course;
 import org.quizfreely.classes.models.User;
+import org.quizfreely.classes.models.Announcement;
 import org.quizfreely.classes.models.ClassUserSettings;
 import org.quizfreely.classes.repos.ClassRepo;
 import org.quizfreely.classes.repos.CourseRepo;
 import org.quizfreely.classes.repos.UserRepo;
 import org.quizfreely.classes.repos.ClassUserSettingsRepo;
+import org.quizfreely.classes.repos.AnnouncementRepo;
 
 @Controller
 public class ClassController {
@@ -32,6 +34,8 @@ public class ClassController {
     UserRepo userRepo;
     @Autowired
     ClassUserSettingsRepo classUserSettingsRepo;
+    @Autowired
+    AnnouncementRepo announcementRepo;
 
     @QueryMapping
     public ClassClass classById(@Argument long id) {
@@ -143,6 +147,19 @@ public class ClassController {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
             return classUserSettingsRepo.getClassUserSettings(
+                classClass.getId(),
+                authContext.getAuthedUser().getId()
+            );
+        } else {
+            return null;
+        }
+    }
+
+    @SchemaMapping
+    public List<Announcement> announcements(ClassClass classClass, DataFetchingEnvironment dataFetchingEnv) {
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+        if (authContext.isAuthed()) {
+            return announcementRepo.getAnnouncementsByClassId(
                 classClass.getId(),
                 authContext.getAuthedUser().getId()
             );

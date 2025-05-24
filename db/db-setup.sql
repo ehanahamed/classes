@@ -485,7 +485,12 @@ grant delete on classes.class_user_settings to eh_classes_api;
 create table classes.announcements (
     id bigserial primary key,
     user_id uuid references auth.users (id) on delete cascade,
-    class_id bigint references classes.classes (id) on delete,
+    class_id bigint references classes.classes (id) on delete cascade,
     content_prosemirror_json jsonb
-)
+);
+
+grant select on classes.announcements to eh_classes_api;
+grant insert on classes.announcements to eh_classes_api;
+grant update on classes.announcements to eh_classes_api;
+grant delete on classes.announcements to eh_classes_api;
 

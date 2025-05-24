@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
-import java.util.Map;
 import org.quizfreely.classes.models.Announcement;
 
 @Repository
@@ -25,7 +24,7 @@ public class AnnouncementRepo {
                     "user_id"
                 ),
                 resultSet.getLong("class_id"),
-                (Map<String, Object>) resultSet.getObject(
+                resultSet.getString(
                     "content_prosemirror_json"
                 )
             );
@@ -48,7 +47,7 @@ public class AnnouncementRepo {
         try {
             return jdbcTemplate.queryForObject(
                 "INSERT INTO classes.announcements (user_id, class_id, content_prosemirror_json) " +
-                "VALUES (?, ?, ?) " +
+                "SELECT ?, ?, ?::jsonb " +
                 "WHERE (" +
                 "    EXISTS (" +
                 "        SELECT 1 FROM classes.classes_teachers ct " +
@@ -57,7 +56,7 @@ public class AnnouncementRepo {
                 "        SELECT 1 FROM classes.classes_students cs " +
                 "        WHERE cs.class_id = ? AND cs.student_user_id = ? " +
                 "    )" + 
-                ")" +
+                ") " +
                 "RETURNING id, user_id, class_id, content_prosemirror_json",
                 new Object[] {
                     authedUserId,
@@ -75,10 +74,10 @@ public class AnnouncementRepo {
         }
     }
 
-    public Announcement updateAnnouncement(long id, Map<String, Object> contentProseMirrorJson, UUID authedUserId) {
+    public Announcement updateAnnouncement(long id, String contentProseMirrorJson, UUID authedUserId) {
         try {
             return jdbcTemplate.queryForObject(
-                "UPDATE classes.announcements SET content_prosemirror_json = ? " +
+                "UPDATE classes.announcements SET content_prosemirror_json = ?::jsonb " +
                 "WHERE id = ? AND user_id = ? " +
                 "RETURNING id, user_id, class_id, content_prosemirror_json",
                 new Object[] {
@@ -105,7 +104,7 @@ public class AnnouncementRepo {
             "        SELECT 1 FROM classes.classes_students cs " +
             "        WHERE cs.class_id = ? AND cs.student_user_id = ? " +
             "    )" + 
-            ")" +
+            ")",
             new Object[] {
                 classId,
                 classId,

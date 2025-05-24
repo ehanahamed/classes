@@ -1,18 +1,17 @@
 package org.quizfreely.classes.models;
 import java.util.UUID;
-import java.util.Map;
 
 public class Announcement {
     private long id;
     private UUID userId;
     private long classId;
-    private Map<String, Object> contentJson;
+    private String contentJson;
 
     public Announcement(
         long id,
         UUID userId,
         long classId,
-        Map<String, Object> contentJson
+        String contentJson
     ) {
         this.id = id;
         this.userId = userId;
@@ -22,7 +21,7 @@ public class Announcement {
     public Announcement(
         UUID userId,
         long classId,
-        Map<String, Object> contentJson
+        String contentJson
     ) {
         this.userId = userId;
         this.classId = classId;
@@ -38,7 +37,7 @@ public class Announcement {
     public long getClassId() {
         return classId;
     }
-    public Map<String, Object> getContentJson() {
+    public String getContentJson() {
         return contentJson;
     }
 }

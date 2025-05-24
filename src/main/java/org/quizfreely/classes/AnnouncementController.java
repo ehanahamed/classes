@@ -11,7 +11,6 @@ import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.Map;
 
 import org.quizfreely.classes.auth.AuthContext;
 import org.quizfreely.classes.models.Announcement;
@@ -47,7 +46,7 @@ public class AnnouncementController {
     @MutationMapping
     public Announcement createAnnouncement(
         @Argument long classId,
-        @Argument Map<String, Object> contentProseMirrorJson,
+        @Argument String contentProseMirrorJson,
         DataFetchingEnvironment dataFetchingEnv
     ) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
@@ -69,7 +68,7 @@ public class AnnouncementController {
     @MutationMapping
     public Announcement updateAnnouncement(
         @Argument long id,
-        @Argument Map<String, Object> contentProseMirrorJson,
+        @Argument String contentProseMirrorJson,
         DataFetchingEnvironment dataFetchingEnv
     ) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
