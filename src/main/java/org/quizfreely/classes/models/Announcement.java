@@ -45,7 +45,7 @@ public class Announcement {
     public String getContentJson() {
         return contentProseMirrorJson;
     }
-    public OffsetDateTime createdAt() {
+    public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
     public OffsetDateTime getUpdatedAt() {
