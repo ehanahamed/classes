@@ -100,7 +100,7 @@ public class AssignmentRepo {
                 "    SELECT 1 FROM classes.classes_teachers ct " +
                 "    WHERE ct.class_id = ? AND ct.teacher_user_id = ? " +
                 ") " +
-                "RETURNING id, user_id, class_id, content_prosemirror_json, created_at, updated_at",
+                "RETURNING id, class_id, teacher_id, title, description_prosemirror_json, points, due_at, created_at, updated_at",
                 new Object[] {
                     assignment.getTitle(),
                     assignment.getDescriptionProseMirrorJson(),
@@ -117,9 +117,9 @@ public class AssignmentRepo {
         }
     }
 
-    public List<Announcement> getAnnouncementsByClassId(long classId, UUID authedUserId) {
+    public List<Announcement> getAssignmentsByClassId(long classId, UUID authedUserId) {
         return jdbcTemplate.query(
-            "SELECT id, user_id, class_id, content_prosemirror_json, created_at, updated_at " +
+            "SELECT id, class_id, teacher_id, title, description_prosemirror_json, points, due_at, created_at, updated_at " +
             "FROM classes.announcements " +
             "WHERE class_id = ? AND (" +
             "    EXISTS (" +
