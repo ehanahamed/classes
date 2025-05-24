@@ -89,7 +89,7 @@ public class AnnouncementRepo {
         try {
             return jdbcTemplate.queryForObject(
                 "UPDATE classes.announcements " +
-                "SET content_prosemirror_json = ?::jsonb " +
+                "SET content_prosemirror_json = ?::jsonb, " +
                 "    updated_at = now() " +
                 "WHERE id = ? AND user_id = ? " +
                 "RETURNING id, user_id, class_id, content_prosemirror_json, created_at, updated_at",

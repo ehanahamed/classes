@@ -87,17 +87,27 @@ public class AssignmentRepo {
         }
     }
 
-    public Announcement updateAnnouncement(long id, String contentProseMirrorJson, UUID authedUserId) {
+    public Assignment updateAssignment(long id, Assignment assignment, UUID authedUserId) {
         try {
             return jdbcTemplate.queryForObject(
                 "UPDATE classes.announcements " +
-                "SET content_prosemirror_json = ?::jsonb " +
+                "SET title = ?, " +
+                "    description_prosemirror_json = ?::jsonb, " +
+                "    points = ?, " +
+                "    due_at = ?, " +
                 "    updated_at = now() " +
-                "WHERE id = ? AND user_id = ? " +
+                "WHERE id = ? AND EXISTS (" +
+                "    SELECT 1 FROM classes.classes_teachers ct " +
+                "    WHERE ct.class_id = ? AND ct.teacher_user_id = ? " +
+                ") " +
                 "RETURNING id, user_id, class_id, content_prosemirror_json, created_at, updated_at",
                 new Object[] {
-                    contentProseMirrorJson,
+                    assignment.getTitle(),
+                    assignment.getDescriptionProseMirrorJson(),
+                    assignment.getPoints(),
+                    assignment.getDueAt(),
                     id,
+                    assignment.getClassId(),
                     authedUserId
                 },
                 announcementRowMapper
