@@ -1,3 +1,5 @@
+scalar DateTime
+
 type Query {
     classById(id: ID!): ClassClass
     classesAsStudent: [ClassClass]
@@ -71,5 +73,7 @@ type Announcement {
     user: User!
     classId: ID!
     contentProseMirrorJson: String
+    createdAt: DateTime
+    updatedAt: DateTime
 }
 
