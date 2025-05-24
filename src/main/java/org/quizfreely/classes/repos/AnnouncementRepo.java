@@ -44,7 +44,8 @@ public class AnnouncementRepo {
     public Announcement getAnnouncementById(long id) {
         try {
             return jdbcTemplate.queryForObject(
-                "SELECT id, user_id, class_id, content_prosemirror_json FROM classes.announcements WHERE id = ?",
+                "SELECT id, user_id, class_id, content_prosemirror_json, created_at, updated_at " +
+                "FROM classes.announcements WHERE id = ?",
                 new Object[] { id },
                 announcementRowMapper
             );
@@ -67,7 +68,7 @@ public class AnnouncementRepo {
                 "        WHERE cs.class_id = ? AND cs.student_user_id = ? " +
                 "    )" + 
                 ") " +
-                "RETURNING id, user_id, class_id, content_prosemirror_json",
+                "RETURNING id, user_id, class_id, content_prosemirror_json, created_at, updated_at",
                 new Object[] {
                     authedUserId,
                     announcement.getClassId(),
@@ -91,7 +92,7 @@ public class AnnouncementRepo {
                 "SET content_prosemirror_json = ?::jsonb " +
                 "    updated_at = now() " +
                 "WHERE id = ? AND user_id = ? " +
-                "RETURNING id, user_id, class_id, content_prosemirror_json",
+                "RETURNING id, user_id, class_id, content_prosemirror_json, created_at, updated_at",
                 new Object[] {
                     contentProseMirrorJson,
                     id,
@@ -106,7 +107,7 @@ public class AnnouncementRepo {
 
     public List<Announcement> getAnnouncementsByClassId(long classId, UUID authedUserId) {
         return jdbcTemplate.query(
-            "SELECT id, user_id, class_id, content_prosemirror_json " +
+            "SELECT id, user_id, class_id, content_prosemirror_json, created_at, updated_at " +
             "FROM classes.announcements " +
             "WHERE class_id = ? AND (" +
             "    EXISTS (" +
