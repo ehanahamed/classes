@@ -11,13 +11,13 @@ import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 public class GraphQLConfig {
 
     @Bean
-    public GraphQLScalarType jsonScalar() {
-        return ExtendedScalars.Json;
+    public GraphQLScalarType dateTimeScalar() {
+        return ExtendedScalars.DateTime;
     }
 
     @Bean
-    public RuntimeWiringConfigurer runtimeWiringConfigurer(GraphQLScalarType jsonScalar) {
-        return wiringBuilder -> wiringBuilder.scalar(jsonScalar);
+    public RuntimeWiringConfigurer runtimeWiringConfigurer(GraphQLScalarType dateTimeScalar) {
+        return wiringBuilder -> wiringBuilder.scalar(dateTimeScalar);
     }
 }
 

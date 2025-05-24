@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
+import java.time.OffsetDateTime;
 import org.quizfreely.classes.models.Announcement;
 
 @Repository
@@ -20,12 +21,21 @@ public class AnnouncementRepo {
         public Announcement mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             return new Announcement(
                 resultSet.getLong("id"),
-                (UUID) resultSet.getObject(
-                    "user_id"
+                resultSet.getObject(
+                    "user_id",
+                    UUID.class
                 ),
                 resultSet.getLong("class_id"),
                 resultSet.getString(
                     "content_prosemirror_json"
+                ),
+                resultSet.getObject(
+                    "created_at",
+                    OffsetDateTime.class
+                ),
+                resultSet.getObject(
+                    "updated_at",
+                    OffsetDateTime.class
                 )
             );
         }
@@ -77,7 +87,9 @@ public class AnnouncementRepo {
     public Announcement updateAnnouncement(long id, String contentProseMirrorJson, UUID authedUserId) {
         try {
             return jdbcTemplate.queryForObject(
-                "UPDATE classes.announcements SET content_prosemirror_json = ?::jsonb " +
+                "UPDATE classes.announcements " +
+                "SET content_prosemirror_json = ?::jsonb " +
+                "    updated_at = now() " +
                 "WHERE id = ? AND user_id = ? " +
                 "RETURNING id, user_id, class_id, content_prosemirror_json",
                 new Object[] {

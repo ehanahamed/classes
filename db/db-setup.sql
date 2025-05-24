@@ -486,7 +486,9 @@ create table classes.announcements (
     id bigserial primary key,
     user_id uuid references auth.users (id) on delete cascade,
     class_id bigint references classes.classes (id) on delete cascade,
-    content_prosemirror_json jsonb
+    content_prosemirror_json jsonb,
+    created_at timestamptz default now(),
+    updated_at timestamptz default now()
 );
 
 grant select on classes.announcements to eh_classes_api;

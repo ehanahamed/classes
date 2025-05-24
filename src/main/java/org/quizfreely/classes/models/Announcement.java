@@ -1,17 +1,22 @@
 package org.quizfreely.classes.models;
 import java.util.UUID;
+import java.time.OffsetDateTime;
 
 public class Announcement {
     private long id;
     private UUID userId;
     private long classId;
     private String contentProseMirrorJson;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
 
     public Announcement(
         long id,
         UUID userId,
         long classId,
-        String contentProseMirrorJson
+        String contentProseMirrorJson,
+        OffsetDateTime createdAt,
+        OffsetDateTime updatedAt
     ) {
         this.id = id;
         this.userId = userId;
@@ -39,6 +44,12 @@ public class Announcement {
     }
     public String getContentJson() {
         return contentProseMirrorJson;
+    }
+    public OffsetDateTime createdAt() {
+        return createdAt;
+    }
+    public OffsetDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }
 
