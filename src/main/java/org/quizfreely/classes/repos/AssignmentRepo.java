@@ -120,7 +120,7 @@ public class AssignmentRepo {
     public List<Assignment> getAssignmentsByClassId(long classId, UUID authedUserId) {
         return jdbcTemplate.query(
             "SELECT id, class_id, teacher_id, title, description_prosemirror_json, points, due_at, created_at, updated_at " +
-            "FROM classes.announcements " +
+            "FROM classes.assignments " +
             "WHERE class_id = ? AND (" +
             "    EXISTS (" +
             "        SELECT 1 FROM classes.classes_teachers ct " +

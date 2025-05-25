@@ -17,12 +17,14 @@ import org.quizfreely.classes.models.ClassClass;
 import org.quizfreely.classes.models.Course;
 import org.quizfreely.classes.models.User;
 import org.quizfreely.classes.models.Announcement;
+import org.quizfreely.classes.models.Assignment;
 import org.quizfreely.classes.models.ClassUserSettings;
 import org.quizfreely.classes.repos.ClassRepo;
 import org.quizfreely.classes.repos.CourseRepo;
 import org.quizfreely.classes.repos.UserRepo;
 import org.quizfreely.classes.repos.ClassUserSettingsRepo;
 import org.quizfreely.classes.repos.AnnouncementRepo;
+import org.quizfreely.classes.repos.AssignmentRepo;
 
 @Controller
 public class ClassController {
@@ -160,6 +162,19 @@ public class ClassController {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
             return announcementRepo.getAnnouncementsByClassId(
+                classClass.getId(),
+                authContext.getAuthedUser().getId()
+            );
+        } else {
+            return null;
+        }
+    }
+
+    @SchemaMapping
+    public List<Assignment> assignments(ClassClass classClass, DataFetchingEnvironment dataFetchingEnv) {
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+        if (authContext.isAuthed()) {
+            return assignmentRepo.getAssignmentsByClassId(
                 classClass.getId(),
                 authContext.getAuthedUser().getId()
             );
