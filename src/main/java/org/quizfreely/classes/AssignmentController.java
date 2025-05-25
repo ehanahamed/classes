@@ -44,7 +44,7 @@ public class AssignmentController {
         if (authContext.isAuthed()) {
             UUID authedUserId = authContext.getAuthedUser().getId();
             return assignmentRepo.createAssignment(
-                new Announcement(
+                new Assignment(
                     classId,
                     authedUserId,
                     title,
@@ -62,14 +62,25 @@ public class AssignmentController {
     @MutationMapping
     public Assignment updateAssignment(
         @Argument long id,
-        @Argument String contentProseMirrorJson,
+        @Argument long classId,
+        @Argument String title,
+        @Argument String descriptionProseMirrorJson,
+        @Argument short points,
+        @Argument OffsetDateTime dueAt,
         DataFetchingEnvironment dataFetchingEnv
     ) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
-            return announcementRepo.updateAssignment(
+            return assignmentRepo.updateAssignment(
                 id,
-                contentProseMirrorJson,
+                new Assignment(
+                    classId,
+                    authedUserId,
+                    title,
+                    descriptionProseMirrorJson,
+                    points,
+                    dueAt
+                ),
                 authContext.getAuthedUser().getId()
             );
         } else {
@@ -78,8 +89,8 @@ public class AssignmentController {
     }
 
     @SchemaMapping
-    public User user(Announcement announcement) {
-        return userRepo.getUserById(announcement.getUserId());
+    public User teacher(Assignment assignment) {
+        return userRepo.getUserById(assignment.getTeacherId());
     }
 }
 
