@@ -80,7 +80,7 @@ public class AssignmentRepo {
                     assignment.getClassId(),
                     authedUserId
                 },
-                announcementRowMapper
+                assignmentRowMapper
             );
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -90,7 +90,7 @@ public class AssignmentRepo {
     public Assignment updateAssignment(long id, Assignment assignment, UUID authedUserId) {
         try {
             return jdbcTemplate.queryForObject(
-                "UPDATE classes.announcements " +
+                "UPDATE classes.assignments " +
                 "SET title = ?, " +
                 "    description_prosemirror_json = ?::jsonb, " +
                 "    points = ?, " +
@@ -110,14 +110,14 @@ public class AssignmentRepo {
                     assignment.getClassId(),
                     authedUserId
                 },
-                announcementRowMapper
+                assignmentRowMapper
             );
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
-    public List<Announcement> getAssignmentsByClassId(long classId, UUID authedUserId) {
+    public List<Assignment> getAssignmentsByClassId(long classId, UUID authedUserId) {
         return jdbcTemplate.query(
             "SELECT id, class_id, teacher_id, title, description_prosemirror_json, points, due_at, created_at, updated_at " +
             "FROM classes.announcements " +
@@ -137,7 +137,7 @@ public class AssignmentRepo {
                 classId,
                 authedUserId
             },
-            announcementRowMapper
+            assignmentRowMapper
         );
     }
 }
