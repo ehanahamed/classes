@@ -71,6 +71,7 @@ public class AssignmentController {
     ) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
+            UUID authedUserId = authContext.getAuthedUser().getId()
             return assignmentRepo.updateAssignment(
                 id,
                 new Assignment(
@@ -81,7 +82,7 @@ public class AssignmentController {
                     points,
                     dueAt
                 ),
-                authContext.getAuthedUser().getId()
+                authedUserId
             );
         } else {
             return null;

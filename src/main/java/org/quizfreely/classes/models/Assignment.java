@@ -59,7 +59,7 @@ public class Assignment {
     public UUID getTeacherId() {
         return teacherId;
     }
-    public UUID getTitle() {
+    public String getTitle() {
         return title;
     }
     public String getDescriptionProseMirrorJson() {
