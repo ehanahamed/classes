@@ -25,6 +25,20 @@ type Mutation {
     updateClassUserSettings(classId: ID!, color: String!): ClassUserSettings
     createAnnouncement(classId: ID!, contentProseMirrorJson: String!): Announcement
     updateAnnouncement(id: ID!, contentProseMirrorJson: String!): Announcement
+    createAssignment(
+        classId: ID!,
+        title: String!,
+        descriptionProseMirrorJson: String,
+        points: Int,
+        dueAt: DateTime
+    ): Assignment
+    updateAssignment(
+        id: ID!,
+        title: String!,
+        descriptionProseMirrorJson: String,
+        points: Int,
+        dueAt: DateTime
+    ): Assignment
 }
 
 type ClassClass {
@@ -72,6 +86,18 @@ type Announcement {
     user: User!
     classId: ID!
     contentProseMirrorJson: String
+    createdAt: DateTime
+    updatedAt: DateTime
+}
+
+type Assignment {
+    id: ID!
+    classId: ID!
+    teacher: User!
+    title: String!
+    descriptionProseMirrorJson: String
+    points: Int
+    dueAt: DateTime
     createdAt: DateTime
     updatedAt: DateTime
 }

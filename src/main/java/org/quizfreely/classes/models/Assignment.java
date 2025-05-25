@@ -40,7 +40,7 @@ public class Assignment {
         String title,
         String descriptionProseMirrorJson,
         short points,
-        OffsetDateTime dueAt,
+        OffsetDateTime dueAt
     ) {
         this.classId = classId;
         this.teacherId = teacherId;

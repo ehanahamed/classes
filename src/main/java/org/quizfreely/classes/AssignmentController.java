@@ -11,6 +11,7 @@ import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
 import java.util.UUID;
+import java.time.OffsetDateTime;
 
 import org.quizfreely.classes.auth.AuthContext;
 import org.quizfreely.classes.models.Assignment;
@@ -31,21 +32,25 @@ public class AssignmentController {
     }
 
     @MutationMapping
-    public Announcement createAssignment(
+    public Assignment createAssignment(
         @Argument long classId,
         @Argument String title,
-        @Argument String contentProseMirrorJson,
-        @Argument String contentProseMirrorJson,
+        @Argument String descriptionProseMirrorJson,
+        @Argument short points,
+        @Argument OffsetDateTime dueAt,
         DataFetchingEnvironment dataFetchingEnv
     ) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
             UUID authedUserId = authContext.getAuthedUser().getId();
-            return announcementRepo.createAnnouncement(
+            return assignmentRepo.createAssignment(
                 new Announcement(
-                    authedUserId,
                     classId,
-                    contentProseMirrorJson
+                    authedUserId,
+                    title,
+                    descriptionProseMirrorJson,
+                    points,
+                    dueAt
                 ),
                 authedUserId
             );
@@ -55,14 +60,14 @@ public class AssignmentController {
     }
 
     @MutationMapping
-    public Announcement updateAnnouncement(
+    public Assignment updateAssignment(
         @Argument long id,
         @Argument String contentProseMirrorJson,
         DataFetchingEnvironment dataFetchingEnv
     ) {
         AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
         if (authContext.isAuthed()) {
-            return announcementRepo.updateAnnouncement(
+            return announcementRepo.updateAssignment(
                 id,
                 contentProseMirrorJson,
                 authContext.getAuthedUser().getId()
