@@ -31,6 +31,11 @@ public class AssignmentController {
         return assignmentRepo.getAssignmentById(id);
     }
 
+    @QueryMapping
+    public Assignment assignmentDraftById(@Argument long id) {
+        return assignmentRepo.getAssignmentDraftById(id);
+    }
+
     @MutationMapping
     public Assignment createAssignment(
         @Argument long classId,
@@ -60,6 +65,34 @@ public class AssignmentController {
     }
 
     @MutationMapping
+    public Assignment createAssignmentDraft(
+        @Argument long classId,
+        @Argument String title,
+        @Argument String descriptionProseMirrorJson,
+        @Argument short points,
+        @Argument OffsetDateTime dueAt,
+        DataFetchingEnvironment dataFetchingEnv
+    ) {
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+        if (authContext.isAuthed()) {
+            UUID authedUserId = authContext.getAuthedUser().getId();
+            return assignmentRepo.createAssignmentDraft(
+                new Assignment(
+                    classId,
+                    authedUserId,
+                    title,
+                    descriptionProseMirrorJson,
+                    points,
+                    dueAt
+                ),
+                authedUserId
+            );
+        } else {
+            return null;
+        }
+    }
+
+    @MutationMapping
     public Assignment updateAssignment(
         @Argument long id,
         @Argument long classId,
@@ -73,6 +106,36 @@ public class AssignmentController {
         if (authContext.isAuthed()) {
             UUID authedUserId = authContext.getAuthedUser().getId();
             return assignmentRepo.updateAssignment(
+                id,
+                new Assignment(
+                    classId,
+                    authedUserId,
+                    title,
+                    descriptionProseMirrorJson,
+                    points,
+                    dueAt
+                ),
+                authedUserId
+            );
+        } else {
+            return null;
+        }
+    }
+
+    @MutationMapping
+    public Assignment updateAssignmentDraft(
+        @Argument long id,
+        @Argument long classId,
+        @Argument String title,
+        @Argument String descriptionProseMirrorJson,
+        @Argument short points,
+        @Argument OffsetDateTime dueAt,
+        DataFetchingEnvironment dataFetchingEnv
+    ) {
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+        if (authContext.isAuthed()) {
+            UUID authedUserId = authContext.getAuthedUser().getId();
+            return assignmentRepo.updateAssignmentDraft(
                 id,
                 new Assignment(
                     classId,

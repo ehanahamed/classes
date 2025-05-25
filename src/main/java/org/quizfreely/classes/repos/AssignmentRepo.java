@@ -140,5 +140,84 @@ public class AssignmentRepo {
             assignmentRowMapper
         );
     }
+
+    public Assignment getAssignmentDraftById(long id, UUID authedUserId) {
+        try {
+            return jdbcTemplate.queryForObject(
+                "SELECT id, class_id, teacher_id, title, description_prosemirror_json, points, due_at, created_at, updated_at " +
+                "FROM classes.assignment_drafts WHERE id = ? AND teacher_id = ?",
+                new Object[] { id, authedUserId },
+                assignmentRowMapper
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public Assignment createAssignmentDraft(Assignment assignment, UUID authedUserId) {
+        try {
+            return jdbcTemplate.queryForObject(
+                "INSERT INTO classes.assignment_drafts (class_id, teacher_id, title, description_prosemirror_json, points, due_at) " +
+                "SELECT ?, ?, ?, ?::jsonb, ?, ? " +
+                "WHERE EXISTS (" +
+                "    SELECT 1 FROM classes.classes_teachers ct " +
+                "    WHERE ct.class_id = ? AND ct.teacher_user_id = ? " +
+                ") " +
+                "RETURNING id, class_id, teacher_id, title, description_prosemirror_json, points, due_at, created_at, updated_at",
+                new Object[] {
+                    assignment.getClassId(),
+                    authedUserId,
+                    assignment.getTitle(),
+                    assignment.getDescriptionProseMirrorJson(),
+                    assignment.getPoints(),
+                    assignment.getDueAt(),
+                    assignment.getClassId(),
+                    authedUserId
+                },
+                assignmentRowMapper
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public Assignment updateAssignmentDraft(long id, Assignment assignment, UUID authedUserId) {
+        try {
+            return jdbcTemplate.queryForObject(
+                "UPDATE classes.assignment_drafts " +
+                "SET title = ?, " +
+                "    description_prosemirror_json = ?::jsonb, " +
+                "    points = ?, " +
+                "    due_at = ?, " +
+                "    updated_at = now() " +
+                "WHERE id = ? AND teacher_id = ? " +
+                "RETURNING id, class_id, teacher_id, title, description_prosemirror_json, points, due_at, created_at, updated_at",
+                new Object[] {
+                    assignment.getTitle(),
+                    assignment.getDescriptionProseMirrorJson(),
+                    assignment.getPoints(),
+                    assignment.getDueAt(),
+                    id,
+                    authedUserId
+                },
+                assignmentRowMapper
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public List<Assignment> getAssignmentDraftsByClassId(long classId, UUID authedUserId) {
+        return jdbcTemplate.query(
+            "SELECT id, class_id, teacher_id, title, description_prosemirror_json, points, due_at, created_at, updated_at " +
+            "FROM classes.assignment_drafts " +
+            "WHERE class_id = ? AND teacher_id = ?" +
+            new Object[] {
+                classId,
+                authedUserId
+            },
+            assignmentRowMapper
+        );
+    }
 }
 

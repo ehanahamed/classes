@@ -182,5 +182,18 @@ public class ClassController {
             return null;
         }
     }
+
+    @SchemaMapping
+    public List<Assignment> assignmentDrafts(ClassClass classClass, DataFetchingEnvironment dataFetchingEnv) {
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+        if (authContext.isAuthed()) {
+            return assignmentRepo.getAssignmentDraftsByClassId(
+                classClass.getId(),
+                authContext.getAuthedUser().getId()
+            );
+        } else {
+            return null;
+        }
+    }
 }
 

@@ -11,6 +11,8 @@ type Query {
     authedUser: AuthedUser
     classUserSettings(classId: ID!): ClassUserSettings
     announcementById(id: ID!): Announcement
+    assignmentById(id: ID!): Assignment
+    assignmentDraftById(id: ID!): Assignment
 }
 
 type Mutation {
@@ -40,6 +42,21 @@ type Mutation {
         points: Int,
         dueAt: DateTime
     ): Assignment
+    createAssignmentDraft(
+        classId: ID!,
+        title: String!,
+        descriptionProseMirrorJson: String,
+        points: Int,
+        dueAt: DateTime
+    ): Assignment
+    updateAssignmentDraft(
+        id: ID!,
+        classId: ID!,
+        title: String!,
+        descriptionProseMirrorJson: String,
+        points: Int,
+        dueAt: DateTime
+    ): Assignment
 }
 
 type ClassClass {
@@ -51,6 +68,8 @@ type ClassClass {
     students: [User]
     userSettings: ClassUserSettings
     announcements: [Announcement]
+    assignments: [Assignment]
+    assignmentDrafts: [Assignment]
 }
 
 type User {
