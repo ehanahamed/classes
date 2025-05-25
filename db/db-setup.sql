@@ -431,8 +431,8 @@ create table classes.assignments (
     teacher_id uuid references auth.users (id) on delete set null,
     title text not null,
     description_prosemirror_json jsonb,
-    due_at timestamptz,
     points smallint,
+    due_at timestamptz,
     created_at timestamptz default now(),
     updated_at timestamptz default now()
 );
@@ -442,6 +442,24 @@ grant insert on classes.assignments to eh_classes_api;
 grant update on classes.assignments to eh_classes_api;
 grant delete on classes.assignments to eh_classes_api;
 grant usage, select on sequence classes.assignments_id_seq to eh_classes_api;
+
+create table classes.assignment_drafts (
+    id bigserial primary key,
+    class_id bigint references classes.classes (id) on delete cascade,
+    teacher_id uuid references auth.users (id) on delete set null,
+    title text not null,
+    description_prosemirror_json jsonb,
+    points smallint,
+    due_at timestamptz,
+    created_at timestamptz default now(),
+    updated_at timestamptz default now()
+);
+
+grant select on classes.assignment_drafts to eh_classes_api;
+grant insert on classes.assignment_drafts to eh_classes_api;
+grant update on classes.assignment_drafts to eh_classes_api;
+grant delete on classes.assignment_drafts to eh_classes_api;
+grant usage, select on sequence classes.assignment_drafts_id_seq to eh_classes_api;
 
 create table classes.assignment_submissions (
     id bigserial primary key,
