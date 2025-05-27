@@ -117,7 +117,8 @@ public class AnnouncementRepo {
             "        SELECT 1 FROM classes.classes_students cs " +
             "        WHERE cs.class_id = ? AND cs.student_user_id = ? " +
             "    )" + 
-            ")",
+            ") " +
+            "ORDER BY created_at DESC",
             new Object[] {
                 classId,
                 classId,
