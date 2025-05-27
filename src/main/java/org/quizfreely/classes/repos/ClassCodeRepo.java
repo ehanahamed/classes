@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,9 +32,9 @@ public class ClassCodeRepo {
 
             try {
                 int rowsAffected = jdbcTemplate.update(
-                    "INSERT INTO class_codes (code, class_id) " +
+                    "INSERT INTO classes.class_codes (code, class_id) " +
                     "SELECT ?, ? WHERE EXISTS (" +
-                    "    SELECT 1 FROM classes_teachers " +
+                    "    SELECT 1 FROM classes.classes_teachers " +
                     "    WHERE class_id = ? AND teacher_user_id = ?" +
                     ")",
                     code,
@@ -63,7 +64,7 @@ public class ClassCodeRepo {
         try {
             return jdbcTemplate.queryForObject(
                 "SELECT code FROM classes.class_codes WHERE class_id = ?",
-                new Object[] { id },
+                new Object[] { classId },
                 classCodeRowMapper
             );
         } catch (EmptyResultDataAccessException e) {

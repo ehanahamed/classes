@@ -25,6 +25,7 @@ import org.quizfreely.classes.repos.UserRepo;
 import org.quizfreely.classes.repos.ClassUserSettingsRepo;
 import org.quizfreely.classes.repos.AnnouncementRepo;
 import org.quizfreely.classes.repos.AssignmentRepo;
+import org.quizfreely.classes.repos.ClassCodeRepo;
 
 @Controller
 public class ClassController {
@@ -40,6 +41,8 @@ public class ClassController {
     AnnouncementRepo announcementRepo;
     @Autowired
     AssignmentRepo assignmentRepo;
+    @Autowired
+    ClassCodeRepo classCodeRepo;
 
     @QueryMapping
     public ClassClass classById(@Argument long id) {
@@ -69,19 +72,19 @@ public class ClassController {
         }
     }
 
-    @MutationMapping
-    public boolean addStudentToClass(@Argument UUID studentUserId, @Argument long classId, DataFetchingEnvironment dataFetchingEnv) {
-        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
-        if (authContext.isAuthed()) {
-            return classRepo.addStudentToClassUsingAuthedId(
-                studentUserId,
-                classId,
-                authContext.getAuthedUser().getId()
-            );
-        } else {
-            return false;
-        }
-    }
+    // @MutationMapping
+    // public boolean addStudentToClass(@Argument UUID studentUserId, @Argument long classId, DataFetchingEnvironment dataFetchingEnv) {
+    //     AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+    //     if (authContext.isAuthed()) {
+    //         return classRepo.addStudentToClassUsingAuthedId(
+    //             studentUserId,
+    //             classId,
+    //             authContext.getAuthedUser().getId()
+    //         );
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
     @MutationMapping
     public ClassClass createClass(@Argument String name, @Argument long courseId, DataFetchingEnvironment dataFetchingEnv) {
@@ -117,19 +120,19 @@ public class ClassController {
         }
     }
 
-    @MutationMapping
-    public boolean addTeacherToClass(@Argument UUID teacherUserId, @Argument long classId, DataFetchingEnvironment dataFetchingEnv) {
-        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
-        if (authContext.isAuthed()) {
-            return classRepo.addTeacherToClassUsingAuthedId(
-                teacherUserId,
-                classId,
-                authContext.getAuthedUser().getId()
-            );
-        } else {
-            return false;
-        }
-    }
+    // @MutationMapping
+    // public boolean addTeacherToClass(@Argument UUID teacherUserId, @Argument long classId, DataFetchingEnvironment dataFetchingEnv) {
+    //     AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+    //     if (authContext.isAuthed()) {
+    //         return classRepo.addTeacherToClassUsingAuthedId(
+    //             teacherUserId,
+    //             classId,
+    //             authContext.getAuthedUser().getId()
+    //         );
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
     @SchemaMapping
     public Course course(ClassClass classModel) {
@@ -201,7 +204,7 @@ public class ClassController {
     @SchemaMapping
     public String classCode(ClassClass classClass) {
         return classCodeRepo.getClassCodeByClassId(
-            classClass.getId(),
+            classClass.getId()
         );
     }
 

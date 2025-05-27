@@ -103,36 +103,20 @@ public class ClassRepo {
             return null;
         }
     }
-    public boolean addStudentToClassUsingAuthedId(
-        UUID studentUserId, long classId, UUID authedUserId
-    ) {
-        return jdbcTemplate.update(
-            "INSERT INTO classes_students (class_id, student_user_id) " + 
-            "VALUES (?, ?) " +
-            "WHERE EXISTS (" +
-            "    SELECT 1 FROM classes_teachers " +
-            "    WHERE teacher_user_id = ? AND class_id = ?" +
-            ")",
-            classId,
-            studentUserId,
-            authedUserId,
-            classId
-        ) > 0;
-    }
     /* returns Long with joined classId */
     public Long joinClassUsingClassCode(
         String classCode, UUID authedUserId
     ) {
         try {
             return jdbcTemplate.queryForObject(
-                "INSERT INTO classes_students (class_id, student_user_id) " + 
-                "SELECT class_id, ? FROM class_codes " +
+                "INSERT INTO classes.classes_students (class_id, student_user_id) " + 
+                "SELECT class_id, ? FROM classes.class_codes " +
                 "WHERE code = ? AND NOT EXISTS (" +
-                "    SELECT 1 FROM classes_students " +
-                "    WHERE student_user_id = ? AND class_id = class_codes.class_id " +
+                "    SELECT 1 FROM classes.classes_students " +
+                "    WHERE student_user_id = ? AND class_id = classes.class_codes.class_id " +
                 ") AND NOT EXISTS (" +
-                "    SELECT 1 FROM classes_teachers " +
-                "    WHERE teacher_user_id = ? AND class_id = class_codes.class_id " +
+                "    SELECT 1 FROM classes.classes_teachers " +
+                "    WHERE teacher_user_id = ? AND class_id = classes.class_codes.class_id " +
                 ") RETURNING class_id",
                 Long.class,
                 authedUserId,
@@ -144,23 +128,21 @@ public class ClassRepo {
             return null;
         }
     }
-    public String generateClassCode(long classId, UUID authedUserId) {
-    }
-    public boolean addTeacherToClassUsingAuthedId(
-        UUID teacherUserId, long classId, UUID authedUserId
-    ) {
-        return jdbcTemplate.update(
-            "INSERT INTO classes_teachers (class_id, teacher_user_id) " + 
-            "VALUES (?, ?) " +
-            "WHERE EXISTS (" +
-            "    SELECT 1 FROM classes_teachers " +
-            "    WHERE teacher_user_id = ? AND class_id = ?" +
-            ")",
-            classId,
-            teacherUserId,
-            authedUserId,
-            classId
-        ) > 0;
-    }
+    // public boolean addTeacherToClassUsingAuthedId(
+    //     UUID teacherUserId, long classId, UUID authedUserId
+    // ) {
+    //     return jdbcTemplate.update(
+    //         "INSERT INTO classes_teachers (class_id, teacher_user_id) " + 
+    //         "VALUES (?, ?) " +
+    //         "WHERE EXISTS (" +
+    //         "    SELECT 1 FROM classes_teachers " +
+    //         "    WHERE teacher_user_id = ? AND class_id = ?" +
+    //         ")",
+    //         classId,
+    //         teacherUserId,
+    //         authedUserId,
+    //         classId
+    //     ) > 0;
+    // }
 }
 

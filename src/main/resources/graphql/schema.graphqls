@@ -22,8 +22,8 @@ type Mutation {
     createClass(name: String!, courseId: ID): ClassClass
     updateClass(id: ID!, name: String!, courseId: ID, color: String!): ClassClass
     deleteClass(classId: ID!): Boolean
-    addStudentToClass(studentUserId: ID!, classId: ID!): Boolean
-    addTeacherToClass(teacherUserId: ID!, classId: ID!): Boolean
+    # addStudentToClass(studentUserId: ID!, classId: ID!): Boolean
+    # addTeacherToClass(teacherUserId: ID!, classId: ID!): Boolean
     updateClassUserSettings(classId: ID!, color: String!): ClassUserSettings
     createAnnouncement(classId: ID!, contentProseMirrorJson: String!): Announcement
     updateAnnouncement(id: ID!, contentProseMirrorJson: String!): Announcement
