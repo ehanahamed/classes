@@ -197,5 +197,25 @@ public class ClassController {
             return null;
         }
     }
+
+    @SchemaMapping
+    public String classCode(ClassClass classClass) {
+        return classCodeRepo.getClassCodeByClassId(
+            classClass.getId(),
+        );
+    }
+
+    @MutationMapping
+    public Long joinClass(@Argument String classCode, DataFetchingEnvironment dataFetchingEnv) {
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+        if (authContext.isAuthed()) {
+            return classRepo.joinClassUsingClassCode(
+                classCode,
+                authContext.getAuthedUser().getId()
+            );
+        } else {
+            return null;
+        }
+    }
 }
 

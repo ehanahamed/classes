@@ -57,6 +57,12 @@ type Mutation {
         points: Int,
         dueAt: DateTime
     ): Assignment
+    generateClassCode(
+        classId: ID!
+    ): String
+    joinClass(
+        classCode: String
+    ): ID!
 }
 
 type ClassClass {
@@ -70,6 +76,7 @@ type ClassClass {
     announcements: [Announcement]
     assignments: [Assignment]
     assignmentDrafts: [Assignment]
+    classCode: String
 }
 
 type User {

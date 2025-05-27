@@ -516,3 +516,14 @@ grant update on classes.announcements to eh_classes_api;
 grant delete on classes.announcements to eh_classes_api;
 grant usage, select on sequence classes.announcements_id_seq to eh_classes_api;
 
+create table classes.class_codes (
+    code text primary key,
+    class_id bigint references classes.classes (id) on delete cascade,
+    created_at timestamptz default now()
+);
+
+grant select on classes.class_codes to eh_classes_api;
+grant insert on classes.class_codes to eh_classes_api;
+grant update on classes.class_codes to eh_classes_api;
+grant delete on classes.class_codes to eh_classes_api;
+

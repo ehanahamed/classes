@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 import org.quizfreely.classes.models.ClassClass;
+import org.quizfreely.classes.services.ClassCodes;
 
 @Repository
 public class ClassRepo {
@@ -117,6 +118,33 @@ public class ClassRepo {
             authedUserId,
             classId
         ) > 0;
+    }
+    /* returns Long with joined classId */
+    public Long joinClassUsingClassCode(
+        String classCode, UUID authedUserId
+    ) {
+        try {
+            return jdbcTemplate.queryForObject(
+                "INSERT INTO classes_students (class_id, student_user_id) " + 
+                "SELECT class_id, ? FROM class_codes " +
+                "WHERE code = ? AND NOT EXISTS (" +
+                "    SELECT 1 FROM classes_students " +
+                "    WHERE student_user_id = ? AND class_id = class_codes.class_id " +
+                ") AND NOT EXISTS (" +
+                "    SELECT 1 FROM classes_teachers " +
+                "    WHERE teacher_user_id = ? AND class_id = class_codes.class_id " +
+                ") RETURNING class_id",
+                Long.class,
+                authedUserId,
+                classCode,
+                authedUserId,
+                authedUserId
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+    public String generateClassCode(long classId, UUID authedUserId) {
     }
     public boolean addTeacherToClassUsingAuthedId(
         UUID teacherUserId, long classId, UUID authedUserId
