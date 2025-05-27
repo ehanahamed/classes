@@ -209,9 +209,11 @@ public class AssignmentRepo {
 
     public List<Assignment> getAssignmentDraftsByClassId(long classId, UUID authedUserId) {
         return jdbcTemplate.query(
-            "SELECT id, class_id, teacher_id, title, description_prosemirror_json, points, due_at, created_at, updated_at " +
-            "FROM classes.assignment_drafts " +
-            "WHERE class_id = ? AND teacher_id = ?" +
+            """
+            SELECT id, class_id, teacher_id, title, description_prosemirror_json, points, due_at, created_at, updated_at
+            FROM classes.assignment_drafts
+            WHERE class_id = ? AND teacher_id = ?
+            """,
             new Object[] {
                 classId,
                 authedUserId
