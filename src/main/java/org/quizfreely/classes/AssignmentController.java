@@ -32,8 +32,12 @@ public class AssignmentController {
     }
 
     @QueryMapping
-    public Assignment assignmentDraftById(@Argument long id) {
-        return assignmentRepo.getAssignmentDraftById(id);
+    public Assignment assignmentDraftById(@Argument long id, DataFetchingEnvironment dataFetchingEnv) {
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+        return assignmentRepo.getAssignmentDraftById(
+            id,
+            authContext.getAuthedUser().getId()
+        );
     }
 
     @MutationMapping

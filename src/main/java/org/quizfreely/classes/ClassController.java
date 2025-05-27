@@ -38,6 +38,8 @@ public class ClassController {
     ClassUserSettingsRepo classUserSettingsRepo;
     @Autowired
     AnnouncementRepo announcementRepo;
+    @Autowired
+    AssignmentRepo assignmentRepo;
 
     @QueryMapping
     public ClassClass classById(@Argument long id) {
