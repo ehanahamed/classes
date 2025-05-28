@@ -119,17 +119,20 @@ public class AssignmentRepo {
 
     public List<Assignment> getAssignmentsByClassId(long classId, UUID authedUserId) {
         return jdbcTemplate.query(
-            "SELECT id, class_id, teacher_id, title, description_prosemirror_json, points, due_at, created_at, updated_at " +
-            "FROM classes.assignments " +
-            "WHERE class_id = ? AND (" +
-            "    EXISTS (" +
-            "        SELECT 1 FROM classes.classes_teachers ct " +
-            "        WHERE ct.class_id = ? AND ct.teacher_user_id = ? " +
-            "    ) OR EXISTS (" +
-            "        SELECT 1 FROM classes.classes_students cs " +
-            "        WHERE cs.class_id = ? AND cs.student_user_id = ? " +
-            "    )" + 
-            ")",
+            """
+            SELECT id, class_id, teacher_id, title, description_prosemirror_json, points, due_at, created_at, updated_at
+            FROM classes.assignments
+            WHERE class_id = ? AND (
+                EXISTS (
+                    SELECT 1 FROM classes.classes_teachers ct
+                    WHERE ct.class_id = ? AND ct.teacher_user_id = ?
+                ) OR EXISTS (
+                    SELECT 1 FROM classes.classes_students cs
+                    WHERE cs.class_id = ? AND cs.student_user_id = ?
+                )
+            )
+            ORDER BY updated_at DESC
+            """,
             new Object[] {
                 classId,
                 classId,
@@ -213,6 +216,7 @@ public class AssignmentRepo {
             SELECT id, class_id, teacher_id, title, description_prosemirror_json, points, due_at, created_at, updated_at
             FROM classes.assignment_drafts
             WHERE class_id = ? AND teacher_id = ?
+            ORDER BY updated_at DESC
             """,
             new Object[] {
                 classId,
