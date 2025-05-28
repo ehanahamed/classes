@@ -170,7 +170,7 @@ public class AssignmentController {
         if (authContext.isAuthed()) {
             return assignmentRepo.deleteAssignment(
                 id,
-                authContext.getAuthedUser().getId();
+                authContext.getAuthedUser().getId()
             );
         } else {
             return null;
@@ -186,7 +186,7 @@ public class AssignmentController {
         if (authContext.isAuthed()) {
             return assignmentRepo.deleteAssignmentDraft(
                 id,
-                authContext.getAuthedUser().getId();
+                authContext.getAuthedUser().getId()
             );
         } else {
             return null;
