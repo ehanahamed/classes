@@ -225,5 +225,35 @@ public class AssignmentRepo {
             assignmentRowMapper
         );
     }
+
+    public boolean deleteAssignment(long id, UUID authedUserId) {
+        return jdbcTemplate.update(
+            """
+            DELETE FROM classes.assignments a
+            WHERE a.id = ? AND EXISTS (
+                SELECT 1 FROM classes.classes_teachers ct
+                WHERE ct.class_id = a.class_id AND
+                ct.teacher_user_id = ?
+            )
+            """,
+            id,
+            authedUserId
+        ) > 0;
+    }
+
+    public boolean deleteAssignmentDraft(long id, UUID authedUserId) {
+        return jdbcTemplate.update(
+            """
+            DELETE FROM classes.assignment_drafts a
+            WHERE a.id = ? AND EXISTS (
+                SELECT 1 FROM classes.classes_teachers ct
+                WHERE ct.class_id = a.class_id AND
+                ct.teacher_user_id = ?
+            )
+            """,
+            id,
+            authedUserId
+        ) > 0;
+    }
 }
 

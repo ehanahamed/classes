@@ -160,5 +160,37 @@ public class AssignmentController {
     public User teacher(Assignment assignment) {
         return userRepo.getUserById(assignment.getTeacherId());
     }
+
+    @MutationMapping
+    public boolean deleteAssignment(
+        @Argument long id,
+        DataFetchingEnvironment dataFetchingEnv
+    ) {
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+        if (authContext.isAuthed()) {
+            return assignmentRepo.deleteAssignment(
+                id,
+                authContext.getAuthedUser().getId();
+            );
+        } else {
+            return null;
+        }
+    }
+
+    @MutationMapping
+    public boolean deleteAssignmentDraft(
+        @Argument long id,
+        DataFetchingEnvironment dataFetchingEnv
+    ) {
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+        if (authContext.isAuthed()) {
+            return assignmentRepo.deleteAssignmentDraft(
+                id,
+                authContext.getAuthedUser().getId();
+            );
+        } else {
+            return null;
+        }
+    }
 }
 
