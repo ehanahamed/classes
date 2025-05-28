@@ -173,7 +173,7 @@ public class AssignmentController {
                 authContext.getAuthedUser().getId()
             );
         } else {
-            return null;
+            return false;
         }
     }
 
@@ -189,7 +189,7 @@ public class AssignmentController {
                 authContext.getAuthedUser().getId()
             );
         } else {
-            return null;
+            return false;
         }
     }
 }
