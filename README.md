@@ -22,3 +22,29 @@ Start the server with `gradlew`:
 ```sh
 $ ./gradlew bootRun
 ```
+
+### Production Setup
+
+So make like a user, if you already cloned the repository re-clone it under that user's home dir, `/home/ehclasses`
+```
+# adduser ehclasses
+```
+
+Build the WAR file
+```
+cd /home/ehclasses/classes
+./gradlew build
+```
+
+Copy the systemd service
+```
+# cp ehclasses.service /etc/systemd/system/ehclasses.service
+```
+
+Reload systemd
+```
+sudo systemctl daemon-reload
+```
+
+
+

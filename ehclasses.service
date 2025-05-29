@@ -1,0 +1,17 @@
+[Unit]
+Description=Classes
+After=network.target
+
+[Service]
+User=ehclasses
+ExecStart=/usr/bin/java -jar /home/user/ehclasses/classes/build/libs/classes.war
+SuccessExitStatus=143
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+Environment=SPRING_PROFILES_ACTIVE=prod
+
+[Install]
+WantedBy=multi-user.target
+
