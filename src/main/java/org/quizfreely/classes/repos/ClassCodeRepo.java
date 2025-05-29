@@ -63,7 +63,7 @@ public class ClassCodeRepo {
     public String getClassCodeByClassId(long classId) {
         try {
             return jdbcTemplate.queryForObject(
-                "SELECT code FROM classes.class_codes WHERE class_id = ?",
+                "SELECT code FROM classes.class_codes WHERE class_id = ? LIMIT 1",
                 new Object[] { classId },
                 classCodeRowMapper
             );
