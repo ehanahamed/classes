@@ -43,7 +43,7 @@ Copy the systemd service
 
 Reload systemd
 ```
-sudo systemctl daemon-reload
+# systemctl daemon-reload
 ```
 
 
