@@ -1,10 +1,14 @@
 # Classes
 
-A classroom management tool and assignment tracker made to help teachers and students assign, submit, organize, and share assignments and studying resources
+Classes is a classroom management tool and assignment tracker. It helps teachers and students assign, submit, organize, and share assignments and studying resources.
+
+https://quizfreely.org/classes
+
+[Codeberg](https://codeberg.org/ehanahamed/classes) · [GitHub](https://github.com/ehanahamed/classes)
 
 ## Setup
 
-These instructions are for running the server process.
+These instructions are for developers running the server process. Users do not need to install or setup anything, just go to https://quizfreely.org/classes
 
 Clone the repository:
 ```sh
@@ -45,6 +49,4 @@ Reload systemd
 ```
 # systemctl daemon-reload
 ```
-
-
 
