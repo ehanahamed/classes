@@ -261,7 +261,7 @@ public class AssignmentRepo {
             """
             SELECT a.id, a.class_id, a.teacher_id, a.title, a.due_at, a.created_at, a.updated_at
             FROM classes.assignments a JOIN classes.classes_students cs ON a.class_id = cs.class_id
-            WHERE cs.user_id = ?
+            WHERE cs.student_user_id = ?
             """,
             assignmentRowMapper,
             authedUserId
