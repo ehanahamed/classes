@@ -13,6 +13,7 @@ type Query {
     announcementById(id: ID!): Announcement
     assignmentById(id: ID!): Assignment
     assignmentDraftById(id: ID!): Assignment
+    allAssignmentsAsStudent: [Assignment]
 }
 
 type Mutation {

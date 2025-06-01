@@ -192,5 +192,19 @@ public class AssignmentController {
             return false;
         }
     }
+
+    @QueryMapping
+    public List<Assignment> allAssignmentsAsStudent(
+        DataFetchingEnvironment dataFetchingEnv
+    ) {
+        AuthContext authContext = dataFetchingEnv.getGraphQlContext().get("authContext");
+        if (authContext.isAuthed()) {
+            return assignmentRepo.getAllAssignmentsAsStudentWithAuthedUserId(
+                authContext.getAuthedUser().getId()
+            );
+        } else {
+            return false;
+        }
+    }
 }
 
