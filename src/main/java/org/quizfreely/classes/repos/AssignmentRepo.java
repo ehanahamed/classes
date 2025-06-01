@@ -259,7 +259,7 @@ public class AssignmentRepo {
     public List<Assignment> getAllAssignmentsAsStudentWithAuthedUserId(UUID authedUserId) {
         return jdbcTemplate.query(
             """
-            SELECT a.id, a.class_id, a.teacher_id, a.title, a.due_at, a.created_at, a.updated_at
+            SELECT a.id, a.class_id, a.teacher_id, a.title, a.description_prosemirror_json, a.points, a.due_at, a.created_at, a.updated_at
             FROM classes.assignments a JOIN classes.classes_students cs ON a.class_id = cs.class_id
             WHERE cs.student_user_id = ?
             """,
