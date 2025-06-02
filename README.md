@@ -22,6 +22,7 @@ Copy `src/main/resources/application-example.properties` to `src/main/resources/
 $ cp src/main/resources/application-example.properties src/main/resources/application.properties
 ```
 
+
 Start the server with `gradlew`:
 ```sh
 $ ./gradlew bootRun
@@ -33,6 +34,8 @@ So make like a user, if you already cloned the repository re-clone it under that
 ```
 # adduser ehclasses
 ```
+
+Change `src/main/resources/application.properties` before building the WAR file, use environment variables to set stuff outside of the WAR, and add those environment variables in `.env`.
 
 Build the WAR file
 ```

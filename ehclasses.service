@@ -1,17 +1,19 @@
 [Unit]
-Description=Classes
+Description=Classes API
 After=network.target
-
+StartLimitBurst=3
+StartLimitIntervalSec=10
+ 
 [Service]
-User=ehclasses
-ExecStart=/usr/bin/java -jar /home/user/ehclasses/classes/build/libs/classes.war
+Restart=always
+RestartSec=1
+WorkingDirectory=/home/ehclasses/classes/
+EnvironmentFile=/home/ehclasses/classes/.env
+ExecStart=/usr/bin/java -jar /home/ehclasses/classes/build/libs/classes.war
 SuccessExitStatus=143
-Restart=on-failure
-RestartSec=5
-StandardOutput=journal
-StandardError=journal
-Environment=SPRING_PROFILES_ACTIVE=prod
-
+TimeoutStopSec=1
+User=ehclasses
+ 
 [Install]
 WantedBy=multi-user.target
 
