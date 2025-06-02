@@ -30,7 +30,7 @@ $ ./gradlew bootRun
 
 ### Production Setup
 
-So make like a user, if you already cloned the repository re-clone it under that user's home dir, `/home/ehclasses`
+So, in addition to the development setup instructions, make like a user, if you already cloned the repository re-clone it under that user's home dir, `/home/ehclasses`
 ```
 # adduser ehclasses
 ```
