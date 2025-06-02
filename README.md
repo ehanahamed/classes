@@ -35,16 +35,11 @@ So, in addition to the development setup instructions, make like a user, if you 
 # adduser ehclasses
 ```
 
-Change `src/main/resources/application.properties` before building the WAR file.
-
-Use environment variables to set stuff outside of the WAR, and add those environment variables in `.env`.
-
-While compiling/building, we need to manually `source` the `.env` file, but after that, systemd will easily use it automatically-ish (it's set in `EnvironmentFile` in `ehclasses.service`.
+Change `src/main/resources/application.properties` **before** building the WAR file.
 
 Build the WAR file
 ```
 cd /home/ehclasses/classes
-source .env # load the env file while building
 ./gradlew build
 cp /build/libs/classes-VERSION.war /build/libs/classes.war
 ```
