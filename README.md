@@ -35,12 +35,18 @@ So make like a user, if you already cloned the repository re-clone it under that
 # adduser ehclasses
 ```
 
-Change `src/main/resources/application.properties` before building the WAR file, use environment variables to set stuff outside of the WAR, and add those environment variables in `.env`.
+Change `src/main/resources/application.properties` before building the WAR file.
+
+Use environment variables to set stuff outside of the WAR, and add those environment variables in `.env`.
+
+While compiling/building, we need to manually `source` the `.env` file, but after that, systemd will easily use it automatically-ish (it's set in `EnvironmentFile` in `ehclasses.service`.
 
 Build the WAR file
 ```
 cd /home/ehclasses/classes
+source .env # load the env file while building
 ./gradlew build
+cp /build/libs/classes-VERSION.war /build/libs/classes.war
 ```
 
 Copy the systemd service
@@ -51,5 +57,10 @@ Copy the systemd service
 Reload systemd
 ```
 # systemctl daemon-reload
+```
+
+Start the service/process
+```
+# systemctl start ehclasses
 ```
 

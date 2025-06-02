@@ -12,7 +12,6 @@ EnvironmentFile=/home/ehclasses/classes/.env
 ExecStart=/usr/bin/java -jar /home/ehclasses/classes/build/libs/classes.war
 SuccessExitStatus=143
 TimeoutStopSec=1
-User=ehclasses
  
 [Install]
 WantedBy=multi-user.target
